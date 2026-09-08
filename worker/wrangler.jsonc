@@ -13,9 +13,9 @@
     "AUTOMERGE_ENABLED": "false",
     // Must match the App's slug, or the self-sender loop-breaker will not fire.
     // Do NOT filter all bots: agent-authored PRs are exactly what this routes.
-    "APP_SLUG": "gatekeeper",
+    "APP_SLUG": "gatekeeper-a64397",
     // Empty means every installed repo. Set it while you are still testing.
-    "ALLOWED_REPOS": ""
+    "ALLOWED_REPOS": "owizdom/bento-open-book"
   }
 
   // Durable Objects land with batching (M7). When they do:

@@ -112,11 +112,32 @@ async function preflight(env: Env): Promise<Response> {
     const jwt = await appJwt(env.GITHUB_APP_ID, key, Math.floor(Date.now() / 1000))
     add('JWT signed, 3 base64url segments', jwt.split('.').length === 3)
 
-    const res = await fetch('https://api.github.com/app', {
-      headers: { Authorization: `Bearer ${jwt}`, Accept: 'application/vnd.github+json', 'User-Agent': 'gatekeeper' },
-    })
-    const app = res.ok ? ((await res.json()) as { slug?: string }) : null
+    const H = { Authorization: `Bearer ${jwt}`, Accept: 'application/vnd.github+json', 'User-Agent': 'gatekeeper' }
+
+    const res = await fetch('https://api.github.com/app', { headers: H })
+    const app = res.ok ? ((await res.json()) as { slug?: string; permissions?: Record<string, string> }) : null
     add('GET /app', res.ok, app?.slug ? `slug=${app.slug}` : `${res.status}`)
+
+    // 🛑 Check contents:write on the INSTALLATION, not on GET /repos ->
+    // permissions.push. That field describes a USER's access and is not a
+    // meaningful signal for an installation token — reading it there reports a
+    // false negative on a correctly configured App.
+    add(
+      'contents:write registered (merge needs it)',
+      app?.permissions?.contents === 'write',
+      `contents=${app?.permissions?.contents ?? 'absent'}`,
+    )
+
+    const ir = await fetch('https://api.github.com/app/installations', { headers: H })
+    const installs = ir.ok ? ((await ir.json()) as Array<{ id: number; permissions?: Record<string, string>; account?: { login?: string } }>) : []
+    add('installations >= 1', installs.length > 0, installs.map(i => i.account?.login).join(', '))
+    for (const i of installs) {
+      add(
+        `contents:write granted on install ${i.id}`,
+        i.permissions?.contents === 'write',
+        `${i.account?.login}: contents=${i.permissions?.contents ?? 'absent'}`,
+      )
+    }
   } catch (e) {
     add('failed', false, (e as Error).message.split('\n')[0])
   }
