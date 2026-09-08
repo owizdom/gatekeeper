@@ -1,0 +1,29 @@
+{
+  // Deploy: npx wrangler deploy --config worker/wrangler.jsonc
+  // Secrets: npx wrangler secret put GITHUB_APP_ID | GITHUB_PRIVATE_KEY_B64 | GITHUB_WEBHOOK_SECRET
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "gatekeeper",
+  "main": "index.ts",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  "vars": {
+    // Both safeties default ON. You turn them off deliberately, per environment.
+    "DRY_RUN": "true",
+    "AUTOMERGE_ENABLED": "false",
+    // Must match the App's slug, or the self-sender loop-breaker will not fire.
+    // Do NOT filter all bots: agent-authored PRs are exactly what this routes.
+    "APP_SLUG": "gatekeeper",
+    // Empty means every installed repo. Set it while you are still testing.
+    "ALLOWED_REPOS": ""
+  }
+
+  // Durable Objects land with batching (M7). When they do:
+  //   "durable_objects": { "bindings": [
+  //     { "name": "BATCH", "class_name": "BatchDO" },
+  //     { "name": "FEED",  "class_name": "FeedDO"  } ] },
+  //   "migrations": [ { "tag": "v1",
+  //     // 🛑 Free-plan Durable Objects are SQLite-backed only. The key is
+  //     // new_sqlite_classes; new_classes fails at deploy time.
+  //     "new_sqlite_classes": ["BatchDO", "FeedDO"] } ]
+}
