@@ -86,6 +86,10 @@ DRY RUN owner/name#1 by owizdom
   4 mutations skipped. Re-run with --apply to perform them.
 ```
 
+Wiring up the GitHub App and the Worker takes about 15 minutes — see **[SETUP.md](SETUP.md)**.
+`node bin/gk-app-setup.mjs` registers the App from a manifest so the permissions cannot be
+mis-ticked, and converts the private key for you.
+
 ## Using it with Sparkles
 
 ```bash

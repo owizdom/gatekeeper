@@ -14,5 +14,8 @@
   },
   "dependencies": {
     "yaml": "^2.6.1"
+  },
+  "devDependencies": {
+    "wrangler": "^4.129.1"
   }
 }
