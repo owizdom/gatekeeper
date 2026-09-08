@@ -88,7 +88,7 @@ export async function installationToken(
   env: AppAuthEnv,
   installationId: number,
   now = Date.now(),
-  fetchImpl: typeof fetch = fetch,
+  fetchImpl: typeof fetch = fetch.bind(globalThis),
 ): Promise<string> {
   const hit = tokenCache.get(installationId)
   if (hit && hit.expMs > now) return hit.token
@@ -123,7 +123,7 @@ export async function installationIdForRepo(
   env: AppAuthEnv,
   repoFullName: string,
   now = Date.now(),
-  fetchImpl: typeof fetch = fetch,
+  fetchImpl: typeof fetch = fetch.bind(globalThis),
 ): Promise<number> {
   const key = await importAppKey(env.GITHUB_PRIVATE_KEY_B64)
   const jwt = await appJwt(env.GITHUB_APP_ID, key, Math.floor(now / 1000))

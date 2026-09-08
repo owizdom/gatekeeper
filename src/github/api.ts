@@ -30,7 +30,12 @@ export class GitHubApi {
     this.token = o.token
     this.dryRun = o.dryRun ?? false
     this.log = o.log ?? (() => {})
-    this.f = o.fetchImpl ?? fetch
+    // 🛑 WORKERS TRAP: `this.f = fetch` detaches fetch from globalThis. Node
+    // tolerates it; workerd throws "Illegal invocation: function called with
+    // incorrect `this` reference" the moment you call it. It cannot be
+    // reproduced locally, so it only appears once deployed — and inside a
+    // Durable Object alarm it appears as a silent retry loop.
+    this.f = o.fetchImpl ?? fetch.bind(globalThis)
   }
 
   /** Escape hatch for endpoints without a named method yet. */
@@ -87,6 +92,20 @@ export class GitHubApi {
       if (page === maxPages) truncated = true
     }
     return { files: out, truncated }
+  }
+
+  /** Read a file from the default branch. Returns null when it does not exist,
+   *  which the caller must treat as "no policy" -> review, never as "allow". */
+  async getFileContent(repo: string, path: string, ref?: string): Promise<string | null> {
+    try {
+      const r = await this.call<{ content?: string; encoding?: string }>(
+        'GET', `/repos/${repo}/contents/${path}${ref ? `?ref=${ref}` : ''}`,
+      )
+      if (!r?.content) return null
+      return atob(r.content.replace(/\n/g, ''))
+    } catch {
+      return null
+    }
   }
 
   checkRunsFor(repo: string, sha: string) {

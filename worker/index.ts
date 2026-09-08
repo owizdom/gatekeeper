@@ -19,6 +19,8 @@
 
 import { verifySignature } from '../src/github/verify.ts'
 import { normalise, ignoreReason, type PullRequestPayload } from '../src/github/events.ts'
+import { resolveBatchKey } from '../src/batch/intent.ts'
+export { BatchDO } from './do-batch.ts'
 
 export interface Env {
   GITHUB_WEBHOOK_SECRET: string
@@ -28,6 +30,13 @@ export interface Env {
   DRY_RUN?: string
   AUTOMERGE_ENABLED?: string
   ALLOWED_REPOS?: string
+  /** Debounce from the LAST sibling. Default 180s. */
+  BATCH_IDLE_MS?: string
+  /** Hard cap from the FIRST sibling, so a batch always closes. Default 720s. */
+  BATCH_CAP_MS?: string
+  /** How long a straggler may still reopen a closed batch. Default 300s. */
+  BATCH_GRACE_MS?: string
+  BATCH: DurableObjectNamespace
 }
 
 const json = (body: unknown, status = 200) =>
@@ -38,6 +47,29 @@ export default {
     const url = new URL(request.url)
 
     if (url.pathname === '/internal/preflight') return preflight(env)
+
+    // The launcher knows how many PRs one request will produce. Telling us turns
+    // the debounce timeout into a fast path: the last arrival closes the window.
+    if (url.pathname === '/internal/register-batch' && request.method === 'POST') {
+      const b = (await request.json()) as { repo?: string; key?: string; expected?: number }
+      if (!b.repo || !b.key) return json({ error: 'repo and key required' }, 400)
+      const id = env.BATCH.idFromName(`${b.repo}#${b.key}`)
+      const r = await env.BATCH.get(id).fetch('https://do/register', {
+        method: 'POST', body: JSON.stringify({ expected: b.expected }),
+      })
+      return json(await r.json(), r.status)
+    }
+
+    // Inspect a batch without waiting for it to close.
+    if (url.pathname === '/internal/batch') {
+      const repo = url.searchParams.get('repo'), key = url.searchParams.get('key')
+      if (!repo || !key) return json({ error: 'repo and key required' }, 400)
+      const id = env.BATCH.idFromName(`${repo}#${key}`)
+      const r = await env.BATCH.get(id).fetch(
+        url.searchParams.get('flush') === '1' ? 'https://do/flush-now' : 'https://do/state',
+      )
+      return json(await r.json())
+    }
     if (url.pathname === '/' ) return json({ ok: true, service: 'gatekeeper' })
     if (request.method !== 'POST' || url.pathname !== '/webhook') {
       return json({ error: 'not_found' }, 404)
@@ -77,18 +109,38 @@ export default {
       return json({ ignored: 'repo-not-enrolled', repo: n.repoFullName, delivery })
     }
 
-    // 6. hand off. The batch Durable Object lands in M7; until then the single-PR
-    //    path is driven by `gk apply`, which calls the same processPullRequest().
-    // 7. respond immediately either way
-    return json({
-      ok: true,
-      delivery,
-      repo: n.repoFullName,
-      pr: n.facts.number,
-      action: n.action,
-      queued: false,
-      note: 'accepted; single-PR processing runs out of band',
+    // 6. derive the batch key from the payload alone — pure, synchronous, no
+    //    network — and hand off to the Durable Object that owns the window.
+    const pr = payload.pull_request!
+    const { key, source } = resolveBatchKey({
+      headRef: pr.head?.ref,
+      body: (pr as { body?: string }).body,
+      number: n.facts.number,
     })
+
+    const id = env.BATCH.idFromName(`${n.repoFullName}#${key}`)
+    const res = await env.BATCH.get(id).fetch('https://do/enqueue', {
+      method: 'POST',
+      body: JSON.stringify({
+        repo: n.repoFullName,
+        batchKey: key,
+        installationId: n.installationId,
+        delivery,
+        pr: {
+          number: n.facts.number,
+          headSha: n.facts.headSha,
+          headRef: pr.head?.ref ?? '',
+          baseRef: n.facts.baseRef,
+          author: n.facts.author,
+          authorType: n.facts.authorType,
+          draft: n.facts.draft,
+        },
+      }),
+    })
+    const enq = (await res.json()) as Record<string, unknown>
+
+    // 7. respond immediately. Everything touching GitHub happens in alarm().
+    return json({ ok: true, delivery, repo: n.repoFullName, pr: n.facts.number, batchKey: key, keySource: source, ...enq })
   },
 }
 
