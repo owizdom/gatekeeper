@@ -1,0 +1,109 @@
+# Gatekeeper policy. Committed to the repo it governs.
+#
+# TWO AXES, deliberately separate:
+#   severity  decides PRECEDENCE  (block > review > auto)
+#   action    decides BEHAVIOUR   (block | review | auto_merge)
+#
+# Severity beats order. Every matching rule is collected and the MAXIMUM
+# severity wins; document order only breaks ties inside one tier. Ordered
+# first-match-wins is a security bug: a PR touching both content/pricing.mdx
+# and src/auth/session.ts would auto-merge an auth change.
+#
+# MATCH SEMANTICS ARE ASYMMETRIC:
+#   block / review  fire if ANY changed file matches
+#   auto            fires only if EVERY changed file matches
+# Permission requires unanimity; restriction needs one trigger.
+
+version: 1
+
+actors:
+  # An unlisted author can never do better than `review`. Fail safe.
+  default_ceiling: review
+
+  humans:
+    - { id: security-lead, github: owizdom, ceiling: auto }
+    - { id: data-lead,     github: owizdom, ceiling: auto }
+    - { id: finance-lead,  github: owizdom, ceiling: auto }
+
+  agents:
+    # A ceiling never grants, it only restricts. `review` here means no rule in
+    # this file can let an agent-authored PR merge itself, whatever it touches.
+    - { id: sparkles, github: "sparkles[bot]", ceiling: review }
+
+defaults: { action: review, reviewer: security-lead }
+ci:       { required_checks: [ci], on_failure: review }
+
+rules:
+  - id: auth-surface
+    severity: block
+    when: { paths: ["src/auth/**", "**/*permission*"] }
+    action: review
+    reviewer: security-lead
+    reason: >
+      Touches the authentication surface ({{matched_paths}}). Agent-authored auth
+      changes are never auto-merged. @{{reviewer_github}} must read the diff.
+
+  - id: schema-migrations
+    severity: block
+    when: { paths: ["migrations/**", "**/schema.sql"] }
+    action: review
+    reviewer: data-lead
+    reason: "Edits a migration ({{matched_paths}}). Not reversible in production."
+
+  - id: billing
+    severity: block
+    # NOTE the .mdx: without it, content/pricing.mdx matches only copy-and-styles
+    # and a pricing change auto-merges as "copy". Found by reading the ruleset
+    # adversarially, not by a test failing.
+    when: { paths: ["src/billing/**", "**/pricing*.{ts,tsx,json,md,mdx}"] }
+    action: review
+    reviewer: finance-lead
+    reason: "Changes billing logic or price data ({{matched_paths}})."
+
+  - id: self-modification
+    severity: block
+    when: { paths: [".github/**", ".gatekeeper.yml"] }
+    action: review
+    reviewer: security-lead
+    reason: "A policy an agent can rewrite is not a policy."
+
+  - id: copy-and-styles
+    severity: auto
+    when:
+      paths: ["content/**/*.{md,mdx}", "src/styles/**/*.css", "public/locales/**/*.json"]
+      max_files: 20
+      max_added_lines: 400
+      # Mirrors the add gate. Without it, deleting every file under content/
+      # is 0 additions and auto-merges.
+      max_deleted_lines: 400
+      forbid_diff_matching: ["<script", "dangerouslySetInnerHTML", "eval(", "http://"]
+    action: auto_merge
+    merge_method: squash
+    reason: >
+      Copy/CSS only ({{matched_paths}}) — {{files_changed}} files, CI green.
+      Auto-merged under `copy-and-styles`, as declared in this file.
+
+batching:
+  enabled: true
+  key: intent_id
+  window_seconds: 180
+  max_window_seconds: 720
+  min_prs: 2
+  reviewer: highest_severity
+  # Makes auto-merge and batching compose: a copy-only PR whose sibling touched
+  # auth waits for the batch decision instead of slipping through alone.
+  auto_merge_within_batch: false
+
+preflight:
+  enabled: true
+  # Load-bearing. toolApprovalMode:"prompt" is accepted with 201 and SILENTLY
+  # IGNORED on the codex runtime — zero approval.requested events. A pre-flight
+  # gate on a non-claude runtime is not a weak gate, it is no gate.
+  require_runtime: claude
+  deny_severity_at_or_above: block
+  # codex emits "Editing files" with no path. Undecidable, so refuse.
+  on_unparseable_tool: deny
+  notify_agent: true
+  message: >
+    Denied by gatekeeper rule `{{rule_id}}`: {{reason}}
+    Do not modify {{matched_paths}}. If the task requires it, stop and ask a human.
