@@ -92,17 +92,39 @@ export async function supervise(
   for await (const ev of client.events(sandboxId, state, pollMs, onLog)) {
     events.push(ev)
 
-    // Early-warning frame: decide now, answer instantly later.
+    // Early-warning frame, used for pre-warming and logging only.
+    //
+    // 🛑 `tool.updated status:"pending"` fires MORE THAN ONCE per call_id, and the
+    // first one is a PLACEHOLDER with no path:
+    //
+    //     id 23  call_id=toolu_01NgB…  tool="Preparing file…"      <- no path
+    //     id 27  call_id=toolu_01NgB…  tool="Write src/auth/note.txt"
+    //     id 29  approval.requested    tool="Write src/auth/note.txt"
+    //
+    // A first-write-wins cache locks in the placeholder's verdict and never
+    // updates. That denies on `on_unparseable_tool` with ruleId=null instead of
+    // on the rule that actually applies — the right answer for the wrong reason,
+    // and the identical bug would wrongly deny an ALLOWED path. So the cache is
+    // last-write-wins, and the authoritative decision is always re-derived from
+    // the approval's own tool string below. Evaluation is pure and microseconds
+    // long; caching buys nothing measurable against an ~84s budget.
     if (ev.type === 'tool.updated') {
       const d = ev.data as { call_id?: string; tool?: string; status?: string }
-      if (d.status === 'pending' && d.call_id && d.tool && !cached.has(d.call_id)) {
-        cached.set(d.call_id, evaluatePreflight(policy, d.tool))
+      if (d.status === 'pending' && d.call_id && d.tool) {
+        const v = evaluatePreflight(policy, d.tool)
+        const prev = cached.get(d.call_id)
+        // Never let a placeholder overwrite a verdict we could actually judge.
+        if (!prev || prev.intent.confidence === 'none') cached.set(d.call_id, v)
       }
     }
 
     if (ev.type === 'approval.requested') {
       const d = ev.data as ApprovalRequested
-      const verdict = cached.get(d.approval_id) ?? evaluatePreflight(policy, d.tool)
+      // Authoritative: the approval frame carries the final tool string. Only
+      // reuse the cached verdict when it was derived from that exact string.
+      const prewarmed = cached.get(d.approval_id)
+      const verdict =
+        prewarmed && prewarmed.intent.raw === d.tool ? prewarmed : evaluatePreflight(policy, d.tool)
       if (!verdict.enforceable) unenforceable++
 
       const row: LedgerRow = {

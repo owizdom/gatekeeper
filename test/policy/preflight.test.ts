@@ -114,3 +114,30 @@ test('preflight and post-flight agree — one policy, not two', () => {
   const d = evaluatePreflight(POLICY, 'Write src/auth/session.ts')
   assert.equal(d.decision, 'deny')
 })
+
+// ─── Regression: the placeholder early-warning frame ─────────────────────────
+// Observed live in ledger-c_48q389r4rkvq.json: tool.updated status:"pending"
+// fires twice for one call_id, and the FIRST carries "Preparing file…" with no
+// path. A first-write-wins cache denied on on_unparseable_tool with ruleId=null
+// instead of on auth-surface — right answer, wrong reason — and would have
+// wrongly denied an allowed path.
+test('the "Preparing file…" placeholder is judged as unparseable', () => {
+  const i = parseToolString('Preparing file…')
+  assert.deepEqual(i.paths, [])
+  assert.equal(i.confidence, 'none')
+})
+
+test('a real path must win over the placeholder, not the other way round', () => {
+  const placeholder = evaluatePreflight(POLICY, 'Preparing file…')
+  const real = evaluatePreflight(POLICY, 'Write src/auth/note.txt')
+  assert.equal(placeholder.ruleId, null, 'placeholder cannot name a rule')
+  assert.equal(real.ruleId, 'auth-surface', 'the real string must name the rule')
+  assert.equal(real.enforceable, true)
+  assert.equal(placeholder.enforceable, false)
+})
+
+test('an allowed path is NOT denied once the placeholder is out of the way', () => {
+  const d = evaluatePreflight(POLICY, 'Write content/note.txt')
+  assert.equal(d.decision, 'approve')
+  assert.equal(d.enforceable, true)
+})

@@ -1,0 +1,263 @@
+{
+  "sandboxId": "c_48q389r4rkvq",
+  "runtime": "claude",
+  "enforced": true,
+  "ledger": [
+    {
+      "at": "2026-09-08T12:09:13.698Z",
+      "approvalId": "toolu_01NgBEtrJenub6NC3E6QFKBv",
+      "tool": "Write src/auth/note.txt",
+      "decision": "deny",
+      "ruleId": null,
+      "reason": "The runtime reported `Preparing file\u2026`, which names no path, so this call cannot be judged. Policy sets `on_unparseable_tool: deny`, so it is refused rather than waved through.",
+      "enforceable": false,
+      "receipt": {
+        "commandId": "011fbda8-d9c1-5ba2-90ad-105a72ae75c3",
+        "revision": 2,
+        "outcome": "applied"
+      },
+      "outcome": "denied"
+    },
+    {
+      "at": "2026-09-08T12:09:18.166Z",
+      "approvalId": "toolu_01FW2n3EMaQvFXYqJ8Tt5usq",
+      "tool": "Write content/note.txt",
+      "decision": "approve",
+      "ruleId": null,
+      "reason": "No block-severity rule covers `content/note.txt`.",
+      "enforceable": true,
+      "receipt": {
+        "commandId": "f23256ad-e598-5f86-955e-b8aa249ece30",
+        "revision": 2,
+        "outcome": "applied"
+      },
+      "outcome": "approved"
+    }
+  ],
+  "denied": 1,
+  "approved": 1,
+  "unenforceable": 1,
+  "events": [
+    {
+      "id": "11",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "turn.started",
+      "ts": "2026-09-08T12:09:05.250Z",
+      "sandbox_id": "c_48q389r4rkvq",
+      "turn_id": "70a2398a-b5ad-5e80-8d15-da077896c80c",
+      "data": {
+        "prompt_id": "70a2398a-b5ad-5e80-8d15-da077896c80c",
+        "text": "Create a file at src/auth/note.txt containing the word one. Then create a file at content/note.txt containing the word two. Then stop.",
+        "files": [],
+        "author": {
+          "id": "user_01M1Y23NSPKFFQR8420YNW9X07"
+        }
+      }
+    },
+    {
+      "id": "21",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.updated",
+      "ts": "2026-09-08T12:09:10.535Z",
+      "sandbox_id": "c_48q389r4rkvq",
+      "turn_id": "70a2398a-b5ad-5e80-8d15-da077896c80c",
+      "data": {
+        "part_id": "gen-1788869347-VGkFtZWkLa0owBskbxKM:text",
+        "message_id": "gen-1788869347-VGkFtZWkLa0owBskbxKM",
+        "kind": "text",
+        "text": "I'll create both files."
+      }
+    },
+    {
+      "id": "23",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "tool.updated",
+      "ts": "2026-09-08T12:09:10.664Z",
+      "sandbox_id": "c_48q389r4rkvq",
+      "turn_id": "70a2398a-b5ad-5e80-8d15-da077896c80c",
+      "data": {
+        "part_id": "tool:toolu_01NgBEtrJenub6NC3E6QFKBv",
+        "message_id": "turn-tools:70a2398a-b5ad-5e80-8d15-da077896c80c",
+        "call_id": "toolu_01NgBEtrJenub6NC3E6QFKBv",
+        "tool": "Preparing file\u2026",
+        "status": "pending"
+      }
+    },
+    {
+      "id": "27",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "tool.updated",
+      "ts": "2026-09-08T12:09:11.628Z",
+      "sandbox_id": "c_48q389r4rkvq",
+      "turn_id": "70a2398a-b5ad-5e80-8d15-da077896c80c",
+      "data": {
+        "part_id": "tool:toolu_01NgBEtrJenub6NC3E6QFKBv",
+        "message_id": "turn-tools:70a2398a-b5ad-5e80-8d15-da077896c80c",
+        "call_id": "toolu_01NgBEtrJenub6NC3E6QFKBv",
+        "tool": "Write src/auth/note.txt",
+        "status": "pending"
+      }
+    },
+    {
+      "id": "29",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "approval.requested",
+      "ts": "2026-09-08T12:09:11.949Z",
+      "sandbox_id": "c_48q389r4rkvq",
+      "turn_id": "70a2398a-b5ad-5e80-8d15-da077896c80c",
+      "data": {
+        "approval_id": "toolu_01NgBEtrJenub6NC3E6QFKBv",
+        "tool": "Write src/auth/note.txt"
+      }
+    },
+    {
+      "id": "30",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "approval.resolved",
+      "ts": "2026-09-08T12:09:14.540Z",
+      "sandbox_id": "c_48q389r4rkvq",
+      "turn_id": "70a2398a-b5ad-5e80-8d15-da077896c80c",
+      "data": {
+        "approval_id": "toolu_01NgBEtrJenub6NC3E6QFKBv",
+        "outcome": "denied"
+      }
+    },
+    {
+      "id": "36",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "tool.updated",
+      "ts": "2026-09-08T12:09:14.859Z",
+      "sandbox_id": "c_48q389r4rkvq",
+      "turn_id": "70a2398a-b5ad-5e80-8d15-da077896c80c",
+      "data": {
+        "part_id": "tool:toolu_01FW2n3EMaQvFXYqJ8Tt5usq",
+        "message_id": "turn-tools:70a2398a-b5ad-5e80-8d15-da077896c80c",
+        "call_id": "toolu_01FW2n3EMaQvFXYqJ8Tt5usq",
+        "tool": "Write content/note.txt",
+        "status": "pending"
+      }
+    },
+    {
+      "id": "40",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "tool.updated",
+      "ts": "2026-09-08T12:09:14.859Z",
+      "sandbox_id": "c_48q389r4rkvq",
+      "turn_id": "70a2398a-b5ad-5e80-8d15-da077896c80c",
+      "data": {
+        "part_id": "tool:toolu_01NgBEtrJenub6NC3E6QFKBv",
+        "message_id": "turn-tools:70a2398a-b5ad-5e80-8d15-da077896c80c",
+        "call_id": "toolu_01NgBEtrJenub6NC3E6QFKBv",
+        "tool": "Write src/auth/note.txt",
+        "status": "error",
+        "error": "The tool call could not be completed."
+      }
+    },
+    {
+      "id": "42",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "approval.requested",
+      "ts": "2026-09-08T12:09:15.185Z",
+      "sandbox_id": "c_48q389r4rkvq",
+      "turn_id": "70a2398a-b5ad-5e80-8d15-da077896c80c",
+      "data": {
+        "approval_id": "toolu_01FW2n3EMaQvFXYqJ8Tt5usq",
+        "tool": "Write content/note.txt"
+      }
+    },
+    {
+      "id": "43",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "approval.resolved",
+      "ts": "2026-09-08T12:09:19.041Z",
+      "sandbox_id": "c_48q389r4rkvq",
+      "turn_id": "70a2398a-b5ad-5e80-8d15-da077896c80c",
+      "data": {
+        "approval_id": "toolu_01FW2n3EMaQvFXYqJ8Tt5usq",
+        "outcome": "approved"
+      }
+    },
+    {
+      "id": "46",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "tool.updated",
+      "ts": "2026-09-08T12:09:19.366Z",
+      "sandbox_id": "c_48q389r4rkvq",
+      "turn_id": "70a2398a-b5ad-5e80-8d15-da077896c80c",
+      "data": {
+        "part_id": "tool:toolu_01FW2n3EMaQvFXYqJ8Tt5usq",
+        "message_id": "turn-tools:70a2398a-b5ad-5e80-8d15-da077896c80c",
+        "call_id": "toolu_01FW2n3EMaQvFXYqJ8Tt5usq",
+        "tool": "Write content/note.txt",
+        "status": "completed"
+      }
+    },
+    {
+      "id": "54",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.updated",
+      "ts": "2026-09-08T12:09:26.335Z",
+      "sandbox_id": "c_48q389r4rkvq",
+      "turn_id": "70a2398a-b5ad-5e80-8d15-da077896c80c",
+      "data": {
+        "part_id": "gen-1788869360-gRhtgImeXIpZSMB2tTi1:thought",
+        "message_id": "gen-1788869360-gRhtgImeXIpZSMB2tTi1",
+        "kind": "reasoning",
+        "text": "The first write attempt was denied, but the second one succeeded \u2014 since the denial means the user declined that action, I should adjust rather than retry it as-is. They said to stop after this, so I'll report what happened and stop there."
+      }
+    },
+    {
+      "id": "60",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.updated",
+      "ts": "2026-09-08T12:09:26.348Z",
+      "sandbox_id": "c_48q389r4rkvq",
+      "turn_id": "70a2398a-b5ad-5e80-8d15-da077896c80c",
+      "data": {
+        "part_id": "gen-1788869360-gRhtgImeXIpZSMB2tTi1:text",
+        "message_id": "gen-1788869360-gRhtgImeXIpZSMB2tTi1",
+        "kind": "text",
+        "text": "Partial result \u2014 one of the two files was created:\n\n- `content/note.txt` \u2014 created, contains `two`\n- `src/auth/note.txt` \u2014 **not created**; the write was denied by the permission prompt\n\nI haven't retried the denied write. Let me know if you'd like me to try again (and approve it), or write it somewhere else."
+      }
+    },
+    {
+      "id": "66",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.completed",
+      "ts": "2026-09-08T12:09:27.006Z",
+      "sandbox_id": "c_48q389r4rkvq",
+      "turn_id": "70a2398a-b5ad-5e80-8d15-da077896c80c",
+      "data": {
+        "message_id": "gen-1788869360-gRhtgImeXIpZSMB2tTi1",
+        "finish": "end_turn"
+      }
+    },
+    {
+      "id": "66",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "turn.completed",
+      "ts": "2026-09-08T12:09:27.006Z",
+      "sandbox_id": "c_48q389r4rkvq",
+      "turn_id": "70a2398a-b5ad-5e80-8d15-da077896c80c",
+      "data": {
+        "state": "succeeded"
+      }
+    }
+  ],
+  "_note": "EVIDENCE for the placeholder bug. tool.updated status:'pending' fires TWICE for call_id toolu_01NgBEtrJenub6NC3E6QFKBv: id 23 carries tool:'Preparing file\u2026' with no path, id 27 carries the real 'Write src/auth/note.txt'. A first-write-wins cache locked in the placeholder, so the deny came from on_unparseable_tool with ruleId=null instead of from auth-surface - the right answer for the wrong reason. The same bug would have wrongly denied an allowed path. Kept as the regression fixture."
+}
