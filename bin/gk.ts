@@ -22,6 +22,35 @@ import { normalise, withFiles, ignoreReason, type PullRequestPayload, type Files
 import type { CiState, Decision } from '../src/policy/types.ts'
 
 const argv = process.argv.slice(2)
+
+// ── The one entry surface ────────────────────────────────────────────────
+// Bare `gk` opens the TUI. The seven verbs below still work for CI and
+// scripts, but they are gone from --help: one documented surface for humans,
+// hidden verbs for machines.
+if (argv.length === 0 || argv[0] === '--help' || argv[0] === '-h') {
+  if (argv[0]) {
+    console.log(`gk — policy for agent-authored pull requests
+
+  gk                 open the terminal UI  (this is the whole surface)
+  gk --help-all      the scriptable verbs, for CI
+
+Everything is inside the UI. Press / for commands.`)
+    process.exit(0)
+  }
+  const { loadConfig } = await import('../src/config/load.ts')
+  const { App } = await import('../src/tui/app.ts')
+  const { execFileSync } = await import('node:child_process')
+  const cfg = loadConfig(process.cwd()).value
+  let repo = cfg.repos[0] ?? ''
+  if (!repo) {
+    try {
+      const url = execFileSync('git', ['remote', 'get-url', 'origin'], { encoding: 'utf8' }).trim()
+      repo = url.replace(/^.*github\.com[:/]/, '').replace(/\.git$/, '')
+    } catch { /* no remote: the UI says `no repo` and still lints the policy */ }
+  }
+  await new App(cfg, repo).run()
+}
+
 const cmd = argv[0] ?? 'help'
 const arg = (n: string, d?: string) => {
   const i = argv.indexOf(`--${n}`)
@@ -294,8 +323,8 @@ switch (cmd) {
     break
   }
 
-  default:
-    console.log(`gk — gatekeeper CLI
+  case '--help-all':
+    console.log(`gk — scriptable verbs (the UI is the documented surface)
 
   gk lint    [--policy .gatekeeper.yml]      validate the policy file
   gk route   [--fixture F | --dir D]         decide, one line each

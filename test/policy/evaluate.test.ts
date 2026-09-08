@@ -159,3 +159,22 @@ test('F2 evaluate is pure — same input, same bytes', () => {
   const b = JSON.stringify(evaluate(POLICY, facts, { now: NOW + 999_999, ciState: 'success' }))
   assert.equal(a, b, 'now is a parameter and must not leak into the decision')
 })
+
+// ─── Near misses: the answer to "why did this NOT auto-merge?" ───────────────
+test('G1 a rule disqualified by a gate is reported, not silently dropped', () => {
+  const d = decide(pr([file('content/a.md', { additions: 401 })]))
+  assert.ok(d.nearMisses?.length, 'the size gate that stopped copy-and-styles must be visible')
+  const m = d.nearMisses!.find(n => n.ruleId === 'copy-and-styles')!
+  assert.match(m.disqualifiedBy, /max_added_lines:401>400/)
+})
+
+test('G2 the stray file that blocked auto-merge is named', () => {
+  const d = decide(pr([file('content/ok.md'), file('src/whatever/thing.ts')]))
+  const m = d.nearMisses!.find(n => n.ruleId === 'copy-and-styles')!
+  assert.match(m.disqualifiedBy, /unmatched-file:src\/whatever\/thing\.ts/)
+})
+
+test('G3 no near misses when nothing came close', () => {
+  const d = decide(pr([file('src/auth/x.ts')]))
+  assert.equal(d.nearMisses, undefined, 'do not manufacture noise')
+})

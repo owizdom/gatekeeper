@@ -23,6 +23,8 @@ import { resolveBatchKey } from '../src/batch/intent.ts'
 export { BatchDO } from './do-batch.ts'
 
 export interface Env {
+  /** Shared secret for /internal/*. Without it those routes are disabled, not open. */
+  INTERNAL_TOKEN?: string
   GITHUB_WEBHOOK_SECRET: string
   GITHUB_APP_ID: string
   GITHUB_PRIVATE_KEY_B64: string
@@ -39,12 +41,31 @@ export interface Env {
   BATCH: DurableObjectNamespace
 }
 
+/** Constant-time compare. A fast-exit compare leaks the token a byte at a time. */
+function timingSafeEqualStr(a: string, b: string): boolean {
+  if (a.length !== b.length || a.length === 0) return false
+  let diff = 0
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i)
+  return diff === 0
+}
+
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } })
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url)
+
+    // 🛑 /internal/* can mutate (force a batch flush, posting real comments) and
+    // can leak repo state. It was reachable by anyone who knew the Worker URL.
+    // Now: no token configured => the routes do not exist; token configured =>
+    // constant-time bearer check.
+    if (url.pathname.startsWith('/internal/')) {
+      const want = env.INTERNAL_TOKEN
+      if (!want) return json({ error: 'internal routes disabled: set INTERNAL_TOKEN' }, 404)
+      const got = (request.headers.get('authorization') ?? '').replace(/^Bearer\s+/i, '')
+      if (!timingSafeEqualStr(got, want)) return json({ error: 'unauthorized' }, 401)
+    }
 
     if (url.pathname === '/internal/preflight') return preflight(env)
 

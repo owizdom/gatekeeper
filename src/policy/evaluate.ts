@@ -33,9 +33,19 @@ export function evaluate(policy: Policy, facts: PrFacts, opts: EvaluateOptions):
   const reviewers: string[] = []
 
   // 1. Collect EVERY matching rule. Never first-match-wins.
-  const hits = policy.rules
-    .map(rule => ({ rule, res: ruleMatches(rule, facts) }))
-    .filter(x => x.res.matched)
+  const all = policy.rules.map(rule => ({ rule, res: ruleMatches(rule, facts) }))
+  const hits = all.filter(x => x.res.matched)
+
+  // A rule that matched the paths but failed a GATE is the single most useful
+  // thing to report, and it was being thrown away.
+  //
+  // Requires matchedPaths.length > 0 — a rule that matched no file at all was
+  // never in contention, and reporting it turns the useful signal into noise
+  // ("copy-and-styles did not fire because src/auth/x.ts is not copy" is not
+  // an insight). Only rules that were genuinely in play are near misses.
+  const nearMisses = all
+    .filter(x => !x.res.matched && x.res.disqualifiedBy && x.res.matchedPaths.length > 0)
+    .map(x => ({ ruleId: x.rule.id, disqualifiedBy: x.res.disqualifiedBy! }))
 
   let severity: Severity
   let action: Decision['action']
@@ -111,5 +121,8 @@ export function evaluate(policy: Policy, facts: PrFacts, opts: EvaluateOptions):
     if (gh) reviewers.push(gh)
   }
 
-  return { action, reasons, matchedRules, reviewers, severity, ceilingApplied }
+  return {
+    action, reasons, matchedRules, reviewers, severity, ceilingApplied,
+    ...(nearMisses.length ? { nearMisses } : {}),
+  }
 }

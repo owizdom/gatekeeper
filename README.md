@@ -58,78 +58,79 @@ guarantee affordable at volume.
 
 ---
 
-## Quick start — 30 seconds, no credentials
+## Quick start
 
 ```bash
 git clone https://github.com/owizdom/gatekeeper && cd gatekeeper && npm install
-
-node bin/gk.ts lint        # validate the policy
-node bin/gk.ts route       # decide every bundled fixture
-node bin/gk.ts explain --fixture fixtures/webhooks/pr-mixed-paths.json
+gk
 ```
 
-No API key, no GitHub App, no deploy. The policy engine is pure, so the CLI runs the exact
-same bytes the server would.
-
-Against a real pull request — **dry run by default**, so a typo cannot mutate anything:
+That is the whole surface. `gk` opens a terminal UI; press `/` for commands.
 
 ```
-$ GITHUB_TOKEN=... gk apply --repo owner/name --pr 1
+  gatekeeper  ·  owizdom/gatekeeper-testbed
 
-DRY RUN owner/name#1 by owizdom
-  #1 -> review (sev=block, ci=unknown, rules=[self-modification])
-  DRY_RUN POST .../issues/1/comments        {...}
-  DRY_RUN POST .../check-runs               {...}
-  DRY_RUN POST .../issues/1/labels          {"labels":["gatekeeper:needs-review"]}
-  DRY_RUN POST .../pulls/1/requested_reviewers {"reviewers":["owizdom"]}
+  RULES                                         5 open · 1 to defaults
+  ──────────────────────────────────────────────────────────────────────────
+    SEV    RULE                 ACTION      CAUGHT
+  ▸ block  auth-surface         review      #12 #2
+    block  schema-migrations    review      —
+    block  billing              review      #2
+    block  self-modification    review      —
+    auto   copy-and-styles      auto_merge  #11 #10
+    ·      defaults             review      #3
 
-  4 mutations skipped. Re-run with --apply to perform them.
+  ↑↓ rule · ⏎ detail · ctrl+o toggle · / commands
+  >
+  online · gatekeeper-testbed · policy ok · dry-run · 5 open · / commands
 ```
 
-Wiring up the GitHub App and the Worker takes about 15 minutes — see **[SETUP.md](SETUP.md)**.
-From the repo root, `node bin/gk-app-setup.mjs` registers the App from a manifest so the
-permissions cannot be mis-ticked, and converts the private key for you.
+The `CAUGHT` column is the point: a rule is not an abstraction, it is a set of
+pull requests, and it is showing you the real ones open right now.
 
-## Using it with Sparkles
+**Commands** — `/rules` `/prs` `/why <pr>` `/try <rule>` `/doctor` `/mode` `/setup`
+`/reload` `/help` `/quit`. Keys match the Sparkles CLI exactly: `/` opens a menu
+that filters as you type, `↑↓` navigate, `Tab` completes, `Enter` confirms,
+`Esc` dismisses, `Ctrl+O` toggles detail.
+
+### The two screens that matter
+
+**`/why 3`** answers the question a policy owner actually has — *why did this
+not auto-merge?* The engine already computes it; it used to be discarded.
+
+```
+  ALMOST FIRED   why this did not auto-merge
+    copy-and-styles       unmatched-file:src/util/thing.ts
+```
+
+**`/try copy-and-styles`** changes a gate and shows which real open pull
+requests move, before anything is written:
+
+```
+  ▸ max_deleted_lines     400 → 50
+
+  IMPACT   11 open · ci as reported
+  STRICTER  1
+    #14   merge → review
+```
+
+Bands are direction of change. Loosening is the only direction that can hurt
+you, so it is counted separately and warned about.
+
+## Automation
+
+The UI needs a terminal. For CI, the scriptable verbs still exist — they are
+just not the documented surface:
 
 ```bash
-export SPARKLES_API_KEY=spk_live_...
-
-# Create a sandbox that is governed from its first tool call
-node bin/gk.ts launch --repo owner/name --prompt "Update the pricing copy"
-
-# Or attach to one that is already running
-node bin/gk.ts supervise --sandbox c_xxxxxxxxxxxx
-
-# See what it WOULD refuse, without touching the approvals API
-node bin/gk.ts supervise --sandbox c_xxxxxxxxxxxx --shadow
+gk lint                                  # validate the policy
+gk route  --repo owner/name              # decide every open PR
+gk apply  --repo owner/name --pr N       # act on one PR
+gk batch  --repo owner/name              # group siblings and decide
+gk --help-all                            # the full list
 ```
 
-A real run against a live sandbox:
-
-```
-$ gk launch --repo owner/name --prompt "Create src/auth/note2.txt ... then content/note2.txt ..."
-
-launching a governed sandbox on owner/name
-  sandbox c_agwdmzmvvn5h runtime=claude model=claude-sonnet-4-6
-  DENY "Write src/auth/note2.txt" (auth-surface)
-  APPROVE "Write content/note2.txt"
-
-  runtime=claude  enforced=true
-  approvals=2  denied=1  approved=1  unenforceable=0
-```
-
-The first write never happened. The rule that stopped it is named, and the agent kept going.
-
-`launch` pins a model that implies the `claude` runtime, sets `toolApprovalMode: "prompt"`,
-and **hard-asserts the runtime on the response** before doing anything else (see the caveat
-below). Then every tool call the agent makes is judged against the same `.gatekeeper.yml`
-your PRs are judged against — one policy, not two that can drift apart.
-
-Every run writes a `ledger-<sandbox>.json`: what was requested, what was decided, which rule
-decided it, and the receipt.
-
----
+Running `gk` without a terminal prints these rather than hanging.
 
 ## The policy file
 
@@ -292,9 +293,12 @@ src/sandbox/    Sparkles client, polling transport, pre-flight supervisor
 src/github/     webhook normalisation, HMAC verify, App auth, REST with DRY_RUN
 src/render/     decision -> comment, check run, labels
 worker/         the <50ms hot path: verify -> parse -> triage -> 200
-bin/gk.ts       the CLI
+src/tui/         the terminal UI — screen, keys, views, impact preview
+src/config/      six-layer config with provenance, mirroring the Sparkles chain
+bin/gk.ts        the single entry point
 fixtures/       recorded sandbox events + webhook payloads
-smoke/          the original probe, unmodified
+test/e2e/        the denial proof — evidence, run deliberately
+smoke/           the original probe, unmodified
 ```
 
 `src/policy/` imports nothing outside itself and a test enforces it. That is what lets the
@@ -302,5 +306,5 @@ same bytes run in a Worker and in the CLI, and lets every rule be tested offline
 credits burned.
 
 ```bash
-npm test     # 117 tests, no network, no credentials
+npm test     # 168 tests, no network, no credentials
 ```

@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+// Evidence, not a command.
+//
+// This proved pre-flight denial works, reproduced on four sandboxes. Its value
+// is a reproducible result, and a reproducible result is a test — not an entry
+// point a new user has to wonder about. Run it deliberately:
+//   node test/e2e/preflight-denial.ts --repo owner/name
+//
 // gk proof — settle whether pre-flight DENIAL actually works.
 //
 // This is milestone 0. Across all five recorded runs exactly one approval.requested
@@ -10,10 +17,10 @@
 //
 // Usage: node bin/gk-proof.ts --repo owner/name [--timeout 600]
 
-import { SparklesClient, RuntimeMismatchError } from '../src/sandbox/client.ts'
-import { pollEvents } from '../src/sandbox/poll.ts'
-import { fetchDurableEvents } from '../src/sandbox/reconcile.ts'
-import { newStreamState, type SandboxEvent, type ApprovalRequested, type ApprovalResolved } from '../src/sandbox/types.ts'
+import { SparklesClient, RuntimeMismatchError } from '../../src/sandbox/client.ts'
+import { pollEvents } from '../../src/sandbox/poll.ts'
+import { fetchDurableEvents } from '../../src/sandbox/reconcile.ts'
+import { newStreamState, type SandboxEvent, type ApprovalRequested, type ApprovalResolved } from '../../src/sandbox/types.ts'
 import { writeFileSync } from 'node:fs'
 import { execFileSync } from 'node:child_process'
 

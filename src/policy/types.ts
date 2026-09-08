@@ -86,4 +86,13 @@ export interface Decision {
   severity: Severity
   /** True when the actor ceiling raised the severity above what the rules alone produced. */
   ceilingApplied: boolean
+  /**
+   * Rules that ALMOST fired, and the gate that stopped them.
+   *
+   * match.ts already computes this — `unmatched-file:src/x.ts`,
+   * `max_added_lines:512>400`, `no-patch:x.ts`, `files-truncated`, `empty-diff`.
+   * It used to be discarded here, which meant the most common real question,
+   * "why did this NOT auto-merge?", had no answer short of a debugger.
+   */
+  nearMisses?: Array<{ ruleId: string; disqualifiedBy: string }>
 }
