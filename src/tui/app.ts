@@ -7,8 +7,9 @@ import type { Config } from '../config/load.ts'
 import type { Rule } from '../policy/types.ts'
 import { withEditedRule, measureImpact, type Impact } from './try.ts'
 import { loadConfig } from '../config/load.ts'
+import { checkSetup, TROUBLE, type Step } from './setup.ts'
 
-type View = 'rules' | 'prs' | 'why' | 'help' | 'try' | 'doctor'
+type View = 'rules' | 'prs' | 'why' | 'help' | 'try' | 'doctor' | 'setup'
 
 export interface Command {
   name: string
@@ -37,6 +38,8 @@ export class App {
   private tryRule: string | null = null
   private tryField = 0
   private tryPatch: Record<string, number> = {}
+  private steps: Step[] = []
+  private setupBusy = false
   private commands: Command[] = []
 
   private cfg: Config
@@ -51,11 +54,7 @@ export class App {
       { name: '/why', aliases: ['/explain'], hint: 'why one pull request got its decision', run: a => this.openWhy(a) },
       { name: '/try', aliases: ['/test'], hint: 'change a gate, see which PRs move', run: a => this.openTry(a) },
       { name: '/doctor', hint: 'config, policy and credentials, layer by layer', run: () => { this.view = 'doctor'; this.cursor = 0 } },
-      { name: '/setup', hint: 'register the GitHub App (opens a browser)', run: () => {
-        // Honest: the manifest flow needs a local HTTP server and a browser, so
-        // it runs outside the alternate screen rather than fighting it.
-        this.status = 'run:  node bin/gk-app-setup.mjs   — then /reload'
-      } },
+      { name: '/setup', hint: 'what is connected, what is not, and what to do', run: () => this.openSetup() },
       { name: '/mode', hint: 'dry-run, live or observe', run: a => this.setMode(a) },
       { name: '/reload', hint: 're-read the policy and the open pull requests', run: () => this.reload() },
       { name: '/help', aliases: ['/?'], hint: 'commands and keys', run: () => { this.view = 'help'; this.cursor = 0 } },
@@ -110,6 +109,80 @@ export class App {
     this.status = m === 'live'
       ? 'mode is LIVE — actions will really be written to GitHub'
       : `mode is ${m}`
+  }
+
+  private async openSetup() {
+    this.view = 'setup'
+    this.cursor = 0
+    this.setupBusy = true
+    this.steps = []
+    this.draw()
+    this.steps = await checkSetup(this.cfg.policy)
+    this.setupBusy = false
+    this.draw()
+  }
+
+  /** Perform the focused step, when it is one we can perform ourselves. */
+  private async runStep() {
+    const step = this.steps[this.cursor]
+    if (!step?.runnable) return
+
+    if (step.id === 'policy') {
+      const { writeFileSync, copyFileSync, existsSync } = await import('node:fs')
+      // A starter policy is the shipped one — it is already the documented,
+      // tested example, and inventing a second template is a second thing to
+      // keep correct.
+      const src = new URL('../../.gatekeeper.yml', import.meta.url)
+      if (existsSync(src)) copyFileSync(src, this.cfg.policy)
+      else writeFileSync(this.cfg.policy, 'version: 1\n')
+      this.status = `wrote ${this.cfg.policy}`
+      return this.openSetup()
+    }
+
+    if (step.id === 'app') {
+      // The manifest flow needs a browser and a local HTTP server. Fighting the
+      // alternate screen buffer for that is pointless — leave it, run, come back.
+      const { spawn } = await import('node:child_process')
+      this.screen.stop()
+      this.stopKeys?.()
+      await new Promise<void>(res => {
+        const c = spawn(process.execPath, ['bin/gk-app-setup.mjs'], { stdio: 'inherit' })
+        c.on('exit', () => res())
+      })
+      this.screen.start(() => this.draw())
+      this.stopKeys = onKeys(k => this.onKey(k))
+      this.status = 'app setup finished'
+      return this.openSetup()
+    }
+
+    if (step.id === 'hook') {
+      this.status = 'pointing the webhook at the Worker…'
+      this.draw()
+      try {
+        const { importAppKey, appJwt } = await import('../github/app-auth.ts')
+        const { readFileSync, existsSync } = await import('node:fs')
+        const vars: Record<string, string> = {}
+        if (existsSync('.dev.vars')) {
+          for (const l of readFileSync('.dev.vars', 'utf8').split('\n')) {
+            const i = l.indexOf('=')
+            if (i > 0) vars[l.slice(0, i).trim()] = l.slice(i + 1).trim()
+          }
+        }
+        const id = process.env.GITHUB_APP_ID || vars.GITHUB_APP_ID
+        const key = process.env.GITHUB_PRIVATE_KEY_B64 || vars.GITHUB_PRIVATE_KEY_B64
+        const url = process.env.GK_WORKER_URL || vars.GK_WORKER_URL
+        const jwt = await appJwt(id!, await importAppKey(key!), Math.floor(Date.now() / 1000))
+        const r = await fetch('https://api.github.com/app/hook/config', {
+          method: 'PATCH',
+          headers: { Authorization: `Bearer ${jwt}`, Accept: 'application/vnd.github+json', 'User-Agent': 'gatekeeper', 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: `${url}/webhook`, content_type: 'json' }),
+        })
+        this.status = r.ok ? 'webhook updated' : `webhook update failed: ${r.status}`
+      } catch (e) {
+        this.status = `webhook update failed: ${(e as Error).message.split('\n')[0]}`
+      }
+      return this.openSetup()
+    }
   }
 
   private openTry(arg: string) {
@@ -196,6 +269,7 @@ export class App {
   }
 
   private onEnter() {
+    if (this.view === 'setup') { void this.runStep(); return }
     if (this.view === 'rules') { this.detail = true }
     if (this.view === 'prs') {
       const pr = this.state?.prs[this.cursor]
@@ -261,6 +335,7 @@ export class App {
     else if (this.view === 'help') this.drawHelp(L)
     else if (this.view === 'try') this.drawTry(L, rule)
     else if (this.view === 'doctor') this.drawDoctor(L, rule)
+    else if (this.view === 'setup') this.drawSetup(L, rule)
 
     const { rows } = this.screen.size
     const menu = this.menuOpen ? this.drawMenu() : []
@@ -441,6 +516,41 @@ export class App {
     }
     L.push('')
     L.push('  ' + style('↑↓ adjust · tab next gate · esc discard · / commands', s.grey))
+  }
+
+  private drawSetup(L: string[], rule: string) {
+    L.push('  ' + style('SETUP', s.bold) +
+      style(this.setupBusy ? '   checking…' : '   what is connected, and what is not', s.grey))
+    L.push('  ' + rule)
+    if (this.setupBusy && !this.steps.length) { L.push('  ' + style('reading the real state…', s.grey)); return }
+
+    const MARK: Record<string, [string, string]> = {
+      ok: ['✓', s.green], todo: ['·', s.yellow], warn: ['!', s.red], checking: ['…', s.grey],
+    }
+    this.cursor = Math.min(this.cursor, Math.max(0, this.steps.length - 1))
+    for (const [i, st] of this.steps.entries()) {
+      const [mark, colour] = MARK[st.state]
+      const sel = i === this.cursor
+      L.push(
+        (sel ? style('  ▸ ', s.blue) : '    ') +
+        style(mark, colour) + ' ' + pad(st.label, 30) + style(st.detail, s.grey),
+      )
+      if (sel && st.action) {
+        L.push('        ' + style(st.action, st.runnable ? s.blue : s.grey))
+      }
+    }
+
+    const done = this.steps.filter(x => x.state === 'ok').length
+    L.push('')
+    L.push('  ' + style(`${done}/${this.steps.length} done`, s.grey))
+
+    if (this.detail) {
+      L.push('')
+      L.push('  ' + style('IF SOMETHING BREAKS', s.grey))
+      for (const [sym, cause] of TROUBLE) L.push('    ' + pad(sym, 32) + style(cause, s.grey))
+    }
+    L.push('')
+    L.push('  ' + style('↑↓ step · ⏎ do it · ctrl+o troubleshooting · / commands', s.grey))
   }
 
   private drawDoctor(L: string[], rule: string) {
