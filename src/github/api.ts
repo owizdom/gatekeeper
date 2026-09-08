@@ -33,6 +33,9 @@ export class GitHubApi {
     this.f = o.fetchImpl ?? fetch
   }
 
+  /** Escape hatch for endpoints without a named method yet. */
+  call2<T>(method: string, path: string, body?: unknown) { return this.call<T>(method, path, body) }
+
   private async call<T>(method: string, path: string, body?: unknown): Promise<T | null> {
     const url = `https://api.github.com${path}`
     const mutating = method !== 'GET'

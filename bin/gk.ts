@@ -13,6 +13,9 @@ import { supervise } from '../src/sandbox/supervise.ts'
 import { GitHubApi } from '../src/github/api.ts'
 import { processPullRequest } from '../src/pipeline.ts'
 import { installationToken, installationIdForRepo } from '../src/github/app-auth.ts'
+import { resolveBatchKey, isSolo } from '../src/batch/intent.ts'
+import { decideBatch, type Sibling } from '../src/batch/decide.ts'
+import { renderBatchSummary, renderPointer, batchLabels } from '../src/render/batch.ts'
 import { parsePolicy } from '../src/schema/load.ts'
 import { route } from '../src/schema/resolve.ts'
 import { normalise, withFiles, ignoreReason, type PullRequestPayload, type FilesEntry } from '../src/github/events.ts'
@@ -149,6 +152,88 @@ switch (cmd) {
     break
   }
 
+  // ── Function 3: group PRs that came from one request ───────────────────
+  case 'batch': {
+    const repo = arg('repo')
+    if (!repo) { console.error('batch needs --repo owner/name'); process.exit(1) }
+    const apply = argv.includes('--apply')
+    const policyText = readPolicy()
+
+    const appId = process.env.GITHUB_APP_ID
+    const appKey = process.env.GITHUB_PRIVATE_KEY_B64
+    if (!appId || !appKey) { console.error('batch needs GITHUB_APP_ID + GITHUB_PRIVATE_KEY_B64'); process.exit(1) }
+    const envA = { GITHUB_APP_ID: appId, GITHUB_PRIVATE_KEY_B64: appKey }
+    const token = await installationToken(envA, await installationIdForRepo(envA, repo))
+    const api = new GitHubApi({ token, dryRun: !apply, log: m => console.log(`  ${m}`) })
+
+    const open = (await api.call2<Array<Record<string, unknown>>>('GET', `/repos/${repo}/pulls?state=open&per_page=100`)) ?? []
+
+    // Group by resolved key. A PR with no key becomes solo:<n> and takes the
+    // IDENTICAL path as a batch of one.
+    const groups = new Map<string, Array<Record<string, unknown>>>()
+    for (const pr of open) {
+      const head = pr.head as { ref: string }
+      const { key } = resolveBatchKey({ headRef: head?.ref, body: pr.body as string, number: pr.number as number })
+      if (!groups.has(key)) groups.set(key, [])
+      groups.get(key)!.push(pr)
+    }
+
+    console.log(`${apply ? 'APPLYING' : 'DRY RUN'} ${repo} — ${open.length} open PRs in ${groups.size} group(s)\n`)
+
+    for (const [key, prs] of groups) {
+      const siblings: Sibling[] = []
+      for (const pr of prs) {
+        const n = pr.number as number
+        const head = pr.head as { sha: string }
+        const user = pr.user as { login: string; type: string }
+        const { files, truncated } = await api.listPullFiles(repo, n)
+        const facts = withFiles(
+          {
+            number: n, author: user?.login ?? '',
+            authorType: (user?.type === 'Bot' ? 'Bot' : 'User') as 'Bot' | 'User',
+            files: [], baseRef: (pr.base as { ref: string })?.ref ?? '',
+            headSha: head?.sha ?? '', draft: pr.draft === true,
+          },
+          files.map(f => ({
+            filename: String(f.filename), status: String(f.status ?? 'modified'),
+            additions: Number(f.additions ?? 0), deletions: Number(f.deletions ?? 0),
+            previous_filename: f.previous_filename as string | undefined,
+            patch: f.patch as string | undefined,
+          })),
+          truncated,
+        )
+        const runs = (await api.checkRunsFor(repo, facts.headSha))?.check_runs ?? []
+        const ci = runs.find(c => c.name === 'ci')
+        const ciState = ci?.conclusion === 'success' ? 'success' : ci ? 'failure' : 'unknown'
+        // inBatch:false on purpose. route() gives each sibling its STANDALONE
+        // verdict; decideBatch then folds them and reports which ones would
+        // have merged alone. Passing inBatch here too would convert merge->batch
+        // before the fold, and `heldBack` would always be empty — the batch
+        // would silently do the right thing while showing nobody why.
+        siblings.push({ number: n, decision: route(policyText, facts, { now: Date.now(), ciState, inBatch: false }) })
+      }
+
+      const b = decideBatch(siblings, { autoMergeWithinBatch: false })
+      const solo = isSolo(key)
+      console.log(`  ${solo ? 'solo ' : 'BATCH'} ${key.padEnd(20)} members=[${b.members.join(',')}] lead=#${b.lead} sev=${b.severity} action=${b.action}${b.heldBack.length ? ` held=[${b.heldBack.join(',')}]` : ''}`)
+
+      if (solo || prs.length === 1) continue // single PRs are gk apply's job
+
+      await api.upsertComment(repo, b.lead, renderBatchSummary(b, key, { dryRun: !apply }))
+      for (const n of b.members) {
+        if (n === b.lead) continue
+        await api.upsertComment(repo, n, renderPointer(b, key, n))
+      }
+      for (const n of b.members) await api.addLabels(repo, n, batchLabels(b))
+      const reviewable = b.reviewers.filter(r => r.toLowerCase() !== String((prs[0].user as { login: string })?.login ?? '').toLowerCase())
+      if (reviewable.length && b.action !== 'merge') {
+        await api.requestReviewers(repo, b.lead, reviewable).catch(() => console.log('  review-request skipped (author cannot review own PR)'))
+      }
+      console.log(`         one summary on #${b.lead}, ${b.members.length - 1} pointer(s), ${b.members.length} label set(s)`)
+    }
+    break
+  }
+
   // ── Sparkles integration ───────────────────────────────────────────────
   case 'launch':
   case 'supervise': {
@@ -213,6 +298,8 @@ switch (cmd) {
   gk explain [--fixture F]                   decide, with every reason
              [--ci success|failure] [--batch]
 
+  gk batch   --repo owner/name [--apply]     group open PRs by intent and decide
+                                              the batch as one thread
   gk apply   --repo owner/name --pr N        run the single-PR path against a
              [--apply]                        real PR. DRY RUN unless --apply.
                                               needs GITHUB_TOKEN
