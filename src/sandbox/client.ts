@@ -8,7 +8,8 @@
 //   - the approvals body is {decision} and nothing else — no reason field exists
 
 import { api } from './http.ts'
-import type { AgentRuntime } from './types.ts'
+import { pollEvents } from './poll.ts'
+import type { AgentRuntime, StreamState } from './types.ts'
 
 export interface CreateSandboxInput {
   repos: Array<{ fullName: string; ref?: string }>
@@ -99,6 +100,16 @@ export class SparklesClient {
 
   get(id: string) {
     return api<Sandbox>(this.key, `/sandboxes/${id}`)
+  }
+
+  /**
+   * The event stream, polled from the durable log. Polling is the primary
+   * transport: the durable log is lean, the approval gate holds for ~84s, and
+   * SSE reconnects 68-130 times per run. Sub-second detection without that
+   * failure surface. Keeps the API key inside the client.
+   */
+  events(sandboxId: string, state: StreamState, pollMs = 1000, onLog?: (m: string) => void) {
+    return pollEvents(this.key, sandboxId, state, pollMs, onLog)
   }
 
   /** 🛑 There is no reason field. The "why" must travel via sendMessage(). */

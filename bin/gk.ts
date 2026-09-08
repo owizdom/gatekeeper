@@ -7,7 +7,9 @@
 //   gk explain --all
 //   gk lint    [--policy .gatekeeper.yml]
 
-import { readFileSync, readdirSync } from 'node:fs'
+import { readFileSync, readdirSync, writeFileSync } from 'node:fs'
+import { SparklesClient } from '../src/sandbox/client.ts'
+import { supervise } from '../src/sandbox/supervise.ts'
 import { parsePolicy } from '../src/schema/load.ts'
 import { route } from '../src/schema/resolve.ts'
 import { normalise, withFiles, ignoreReason, type PullRequestPayload, type FilesEntry } from '../src/github/events.ts'
@@ -86,6 +88,62 @@ switch (cmd) {
     break
   }
 
+  // ── Sparkles integration ───────────────────────────────────────────────
+  case 'launch':
+  case 'supervise': {
+    const key = process.env.SPARKLES_API_KEY
+    if (!key) { console.error('SPARKLES_API_KEY is not set'); process.exit(1) }
+    const text = readPolicy()
+    if (text == null) { console.error(`no policy at ${POLICY_PATH}`); process.exit(1) }
+    const parsed = parsePolicy(text)
+    if (!parsed.ok) { console.error(`INVALID policy: ${parsed.error}`); process.exit(1) }
+    const policy = parsed.policy
+    const client = new SparklesClient(key)
+    const log = (m: string) => console.log(`  ${m}`)
+
+    let sandboxId = arg('sandbox') ?? ''
+    if (cmd === 'launch') {
+      const repo = arg('repo')
+      const prompt = arg('prompt')
+      if (!repo || !prompt) { console.error('launch needs --repo owner/name --prompt "..."'); process.exit(1) }
+      const required = (policy.preflight as { require_runtime?: string })?.require_runtime ?? 'claude'
+      console.log(`launching a governed sandbox on ${repo}`)
+      // Pin the model that implies the required runtime, and hard-assert it.
+      // toolApprovalMode defaults to "auto" server-side: omit it and there is no gate.
+      const sb = await client.createSandbox(
+        {
+          repos: [{ fullName: repo }],
+          prompt,
+          model: arg('model', 'claude-sonnet-4-6'),
+          title: arg('title', 'gatekeeper governed run'),
+          toolApprovalMode: 'prompt',
+          metadata: { governed_by: 'gatekeeper' },
+        },
+        required as 'claude',
+      )
+      sandboxId = sb.id
+      console.log(`  sandbox ${sandboxId} runtime=${sb.agentRuntime} model=${sb.model}`)
+    }
+    if (!sandboxId) { console.error('supervise needs --sandbox c_xxxxxxxxxxxx'); process.exit(1) }
+
+    const res = await supervise(client, sandboxId, policy, {
+      onLog: log,
+      enforce: !argv.includes('--shadow'),
+      timeoutMs: Number(arg('timeout', '900')) * 1000,
+    })
+
+    console.log(`\n  runtime=${res.runtime}  enforced=${res.enforced}`)
+    console.log(`  approvals=${res.ledger.length}  denied=${res.denied}  approved=${res.approved}  unenforceable=${res.unenforceable}`)
+    for (const r of res.ledger) {
+      console.log(`  ${r.decision.toUpperCase().padEnd(7)} ${JSON.stringify(r.tool)}${r.ruleId ? `  [${r.ruleId}]` : ''}${r.enforceable ? '' : '  (UNENFORCEABLE)'}`)
+    }
+    const out = arg('out', `ledger-${sandboxId}.json`)!
+    writeFileSync(out, JSON.stringify(res, null, 2))
+    console.log(`  ledger -> ${out}`)
+    if (argv.includes('--terminate')) await client.terminate(sandboxId).catch(() => {})
+    break
+  }
+
   default:
     console.log(`gk — gatekeeper CLI
 
@@ -93,5 +151,14 @@ switch (cmd) {
   gk route   [--fixture F | --dir D]         decide, one line each
   gk explain [--fixture F]                   decide, with every reason
              [--ci success|failure] [--batch]
+
+  Sparkles integration (needs SPARKLES_API_KEY):
+
+  gk launch    --repo owner/name --prompt "..."   create a GOVERNED sandbox and
+                                                  enforce policy on every tool call
+  gk supervise --sandbox c_xxxxxxxxxxxx           attach to a running sandbox
+               [--shadow] [--terminate] [--out F]
+
+  --shadow records what it WOULD have done without calling the approvals API.
 `)
 }
