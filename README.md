@@ -86,6 +86,22 @@ node bin/gk.ts supervise --sandbox c_xxxxxxxxxxxx
 node bin/gk.ts supervise --sandbox c_xxxxxxxxxxxx --shadow
 ```
 
+A real run against a live sandbox:
+
+```
+$ gk launch --repo owner/name --prompt "Create src/auth/note2.txt ... then content/note2.txt ..."
+
+launching a governed sandbox on owner/name
+  sandbox c_agwdmzmvvn5h runtime=claude model=claude-sonnet-4-6
+  DENY "Write src/auth/note2.txt" (auth-surface)
+  APPROVE "Write content/note2.txt"
+
+  runtime=claude  enforced=true
+  approvals=2  denied=1  approved=1  unenforceable=0
+```
+
+The first write never happened. The rule that stopped it is named, and the agent kept going.
+
 `launch` pins a model that implies the `claude` runtime, sets `toolApprovalMode: "prompt"`,
 and **hard-asserts the runtime on the response** before doing anything else (see the caveat
 below). Then every tool call the agent makes is judged against the same `.gatekeeper.yml`
@@ -188,6 +204,14 @@ never forwards raw tool arguments, so `{approval_id, tool}` is all you get. `cla
 `"Write src/auth/session.ts"` (a path — policy is possible). `codex` gives `"Editing files"`
 (no path — undecidable). Unjudgeable calls are counted and surfaced, never silently waved
 through; `preflight.on_unparseable_tool` chooses whether they are approved or refused.
+
+🛑 **`tool.updated status:"pending"` fires more than once per call, and the first one is a
+placeholder.** A real capture shows `"Preparing file…"` (no path) at event 23 and the actual
+`"Write src/auth/note.txt"` at event 27, both under one `call_id`. If you pre-warm a decision
+from the first frame and cache it, you will judge the placeholder instead of the call — which
+denies for the wrong reason, and wrongly denies allowed paths. Always re-derive from the
+`approval.requested` frame's own tool string. Evidence:
+[`fixtures/sandbox/ledger-placeholder-bug-c_48q389r4rkvq.json`](fixtures/sandbox/).
 
 🛑 **The deny call carries no reason field.** The API accepts `{decision}` and nothing else, so
 the "why" is delivered to the agent as a follow-up message and recorded in the ledger.

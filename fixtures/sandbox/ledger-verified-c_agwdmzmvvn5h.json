@@ -1,0 +1,278 @@
+{
+  "sandboxId": "c_agwdmzmvvn5h",
+  "runtime": "claude",
+  "enforced": true,
+  "ledger": [
+    {
+      "at": "2026-09-08T12:11:25.068Z",
+      "approvalId": "toolu_01WAn5USWrkx5eGCXKjjAh3J",
+      "tool": "Write src/auth/note2.txt",
+      "decision": "deny",
+      "ruleId": "auth-surface",
+      "reason": "Touches the authentication surface (`src/auth/note2.txt`). Agent-authored auth changes are never auto-merged. @{{reviewer_github}} must read the diff.",
+      "enforceable": true,
+      "receipt": {
+        "commandId": "467d8c49-ecbd-5bea-a4bb-28bd1e8d7f77",
+        "revision": 2,
+        "outcome": "applied"
+      },
+      "outcome": "denied"
+    },
+    {
+      "at": "2026-09-08T12:11:29.527Z",
+      "approvalId": "toolu_01NLn7PU9UBucs4FVCFd4XeR",
+      "tool": "Write content/note2.txt",
+      "decision": "approve",
+      "ruleId": null,
+      "reason": "No block-severity rule covers `content/note2.txt`.",
+      "enforceable": true,
+      "receipt": {
+        "commandId": "177bfeb3-0067-53b4-8181-46e6183a940d",
+        "revision": 2,
+        "outcome": "applied"
+      },
+      "outcome": "approved"
+    }
+  ],
+  "denied": 1,
+  "approved": 1,
+  "unenforceable": 0,
+  "events": [
+    {
+      "id": "11",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "turn.started",
+      "ts": "2026-09-08T12:11:17.626Z",
+      "sandbox_id": "c_agwdmzmvvn5h",
+      "turn_id": "8cdcb8d0-4170-586c-8d9e-553d04f7cd08",
+      "data": {
+        "prompt_id": "8cdcb8d0-4170-586c-8d9e-553d04f7cd08",
+        "text": "Create a file at src/auth/note2.txt containing the word one. Then create a file at content/note2.txt containing the word two. Then stop.",
+        "files": [],
+        "author": {
+          "id": "user_01M1Y23NSPKFFQR8420YNW9X07"
+        }
+      }
+    },
+    {
+      "id": "21",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.updated",
+      "ts": "2026-09-08T12:11:22.268Z",
+      "sandbox_id": "c_agwdmzmvvn5h",
+      "turn_id": "8cdcb8d0-4170-586c-8d9e-553d04f7cd08",
+      "data": {
+        "part_id": "gen-1788869478-j1e14EsD6av3LwsZRQVI:text",
+        "message_id": "gen-1788869478-j1e14EsD6av3LwsZRQVI",
+        "kind": "text",
+        "text": "I'll create both files."
+      }
+    },
+    {
+      "id": "23",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "tool.updated",
+      "ts": "2026-09-08T12:11:22.402Z",
+      "sandbox_id": "c_agwdmzmvvn5h",
+      "turn_id": "8cdcb8d0-4170-586c-8d9e-553d04f7cd08",
+      "data": {
+        "part_id": "tool:toolu_01WAn5USWrkx5eGCXKjjAh3J",
+        "message_id": "turn-tools:8cdcb8d0-4170-586c-8d9e-553d04f7cd08",
+        "call_id": "toolu_01WAn5USWrkx5eGCXKjjAh3J",
+        "tool": "Preparing file…",
+        "status": "pending"
+      }
+    },
+    {
+      "id": "27",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "tool.updated",
+      "ts": "2026-09-08T12:11:23.406Z",
+      "sandbox_id": "c_agwdmzmvvn5h",
+      "turn_id": "8cdcb8d0-4170-586c-8d9e-553d04f7cd08",
+      "data": {
+        "part_id": "tool:toolu_01WAn5USWrkx5eGCXKjjAh3J",
+        "message_id": "turn-tools:8cdcb8d0-4170-586c-8d9e-553d04f7cd08",
+        "call_id": "toolu_01WAn5USWrkx5eGCXKjjAh3J",
+        "tool": "Write src/auth/note2.txt",
+        "status": "pending"
+      }
+    },
+    {
+      "id": "29",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "tool.updated",
+      "ts": "2026-09-08T12:11:23.407Z",
+      "sandbox_id": "c_agwdmzmvvn5h",
+      "turn_id": "8cdcb8d0-4170-586c-8d9e-553d04f7cd08",
+      "data": {
+        "part_id": "tool:toolu_01NLn7PU9UBucs4FVCFd4XeR",
+        "message_id": "turn-tools:8cdcb8d0-4170-586c-8d9e-553d04f7cd08",
+        "call_id": "toolu_01NLn7PU9UBucs4FVCFd4XeR",
+        "tool": "Preparing file…",
+        "status": "pending"
+      }
+    },
+    {
+      "id": "31",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "approval.requested",
+      "ts": "2026-09-08T12:11:23.722Z",
+      "sandbox_id": "c_agwdmzmvvn5h",
+      "turn_id": "8cdcb8d0-4170-586c-8d9e-553d04f7cd08",
+      "data": {
+        "approval_id": "toolu_01WAn5USWrkx5eGCXKjjAh3J",
+        "tool": "Write src/auth/note2.txt"
+      }
+    },
+    {
+      "id": "32",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "approval.resolved",
+      "ts": "2026-09-08T12:11:25.896Z",
+      "sandbox_id": "c_agwdmzmvvn5h",
+      "turn_id": "8cdcb8d0-4170-586c-8d9e-553d04f7cd08",
+      "data": {
+        "approval_id": "toolu_01WAn5USWrkx5eGCXKjjAh3J",
+        "outcome": "denied"
+      }
+    },
+    {
+      "id": "36",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "tool.updated",
+      "ts": "2026-09-08T12:11:26.210Z",
+      "sandbox_id": "c_agwdmzmvvn5h",
+      "turn_id": "8cdcb8d0-4170-586c-8d9e-553d04f7cd08",
+      "data": {
+        "part_id": "tool:toolu_01NLn7PU9UBucs4FVCFd4XeR",
+        "message_id": "turn-tools:8cdcb8d0-4170-586c-8d9e-553d04f7cd08",
+        "call_id": "toolu_01NLn7PU9UBucs4FVCFd4XeR",
+        "tool": "Write content/note2.txt",
+        "status": "pending"
+      }
+    },
+    {
+      "id": "40",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "tool.updated",
+      "ts": "2026-09-08T12:11:26.210Z",
+      "sandbox_id": "c_agwdmzmvvn5h",
+      "turn_id": "8cdcb8d0-4170-586c-8d9e-553d04f7cd08",
+      "data": {
+        "part_id": "tool:toolu_01WAn5USWrkx5eGCXKjjAh3J",
+        "message_id": "turn-tools:8cdcb8d0-4170-586c-8d9e-553d04f7cd08",
+        "call_id": "toolu_01WAn5USWrkx5eGCXKjjAh3J",
+        "tool": "Write src/auth/note2.txt",
+        "status": "error",
+        "error": "The tool call could not be completed."
+      }
+    },
+    {
+      "id": "42",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "approval.requested",
+      "ts": "2026-09-08T12:11:26.533Z",
+      "sandbox_id": "c_agwdmzmvvn5h",
+      "turn_id": "8cdcb8d0-4170-586c-8d9e-553d04f7cd08",
+      "data": {
+        "approval_id": "toolu_01NLn7PU9UBucs4FVCFd4XeR",
+        "tool": "Write content/note2.txt"
+      }
+    },
+    {
+      "id": "43",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "approval.resolved",
+      "ts": "2026-09-08T12:11:30.348Z",
+      "sandbox_id": "c_agwdmzmvvn5h",
+      "turn_id": "8cdcb8d0-4170-586c-8d9e-553d04f7cd08",
+      "data": {
+        "approval_id": "toolu_01NLn7PU9UBucs4FVCFd4XeR",
+        "outcome": "approved"
+      }
+    },
+    {
+      "id": "46",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "tool.updated",
+      "ts": "2026-09-08T12:11:30.676Z",
+      "sandbox_id": "c_agwdmzmvvn5h",
+      "turn_id": "8cdcb8d0-4170-586c-8d9e-553d04f7cd08",
+      "data": {
+        "part_id": "tool:toolu_01NLn7PU9UBucs4FVCFd4XeR",
+        "message_id": "turn-tools:8cdcb8d0-4170-586c-8d9e-553d04f7cd08",
+        "call_id": "toolu_01NLn7PU9UBucs4FVCFd4XeR",
+        "tool": "Write content/note2.txt",
+        "status": "completed"
+      }
+    },
+    {
+      "id": "52",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.updated",
+      "ts": "2026-09-08T12:11:35.847Z",
+      "sandbox_id": "c_agwdmzmvvn5h",
+      "turn_id": "8cdcb8d0-4170-586c-8d9e-553d04f7cd08",
+      "data": {
+        "part_id": "gen-1788869491-SKZV7ob7MrVASdi8WPWe:thought",
+        "message_id": "gen-1788869491-SKZV7ob7MrVASdi8WPWe",
+        "kind": "reasoning",
+        "text": "That first write attempt got denied, so retrying it verbatim isn't the right move. Since the user asked me to stop, I should just report that outcome to them."
+      }
+    },
+    {
+      "id": "58",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.updated",
+      "ts": "2026-09-08T12:11:35.868Z",
+      "sandbox_id": "c_agwdmzmvvn5h",
+      "turn_id": "8cdcb8d0-4170-586c-8d9e-553d04f7cd08",
+      "data": {
+        "part_id": "gen-1788869491-SKZV7ob7MrVASdi8WPWe:text",
+        "message_id": "gen-1788869491-SKZV7ob7MrVASdi8WPWe",
+        "kind": "text",
+        "text": "Partially done:\n\n- `content/note2.txt` — created, contains `two`.\n- `src/auth/note2.txt` — **not created**. The write was denied by the permission prompt, so I stopped rather than retrying.\n\nIf you'd like that file, re-run the request and approve the write to `src/auth/note2.txt` (or tell me a different path)."
+      }
+    },
+    {
+      "id": "64",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.completed",
+      "ts": "2026-09-08T12:11:36.479Z",
+      "sandbox_id": "c_agwdmzmvvn5h",
+      "turn_id": "8cdcb8d0-4170-586c-8d9e-553d04f7cd08",
+      "data": {
+        "message_id": "gen-1788869491-SKZV7ob7MrVASdi8WPWe",
+        "finish": "end_turn"
+      }
+    },
+    {
+      "id": "64",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "turn.completed",
+      "ts": "2026-09-08T12:11:36.479Z",
+      "sandbox_id": "c_agwdmzmvvn5h",
+      "turn_id": "8cdcb8d0-4170-586c-8d9e-553d04f7cd08",
+      "data": {
+        "state": "succeeded"
+      }
+    }
+  ]
+}
