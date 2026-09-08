@@ -1,0 +1,1464 @@
+[
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "snapshot",
+    "ts": "2026-09-07T14:09:10.622Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "sandbox": {
+        "id": "c_ws3u957m58nw",
+        "object": "sandbox",
+        "status": "queued",
+        "title": "Gatekeeper approval smoke test",
+        "repos": [
+          {
+            "fullName": "owizdom/bento-open-book"
+          }
+        ],
+        "model": "gpt-5-6",
+        "agentRuntime": "codex",
+        "turn": {
+          "active": false
+        },
+        "usage": {
+          "llmRequestCount": 0,
+          "costMicroUsd": 0,
+          "creditsChargedMicros": 0
+        },
+        "metadata": {
+          "source": "gatekeeper-smoke",
+          "purpose": "verify-approval-blocking"
+        },
+        "error": null,
+        "createdAt": "2026-09-07T14:09:03.871Z",
+        "startedAt": null,
+        "completedAt": null,
+        "links": {
+          "self": "https://sparkles.dev/api/public/v1/sandboxes/c_ws3u957m58nw",
+          "events": "https://sparkles.dev/api/public/v1/sandboxes/c_ws3u957m58nw/events",
+          "messages": "https://sparkles.dev/api/public/v1/sandboxes/c_ws3u957m58nw/messages"
+        }
+      },
+      "turn": null,
+      "resume_cursor": "0"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:09:10.622Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "queued"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:09:13.551Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:09:16.781Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:09:20.429Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:09:24.301Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:09:28.028Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:09:31.818Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:09:35.724Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:09:39.621Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:09:43.386Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:09:47.162Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:09:50.921Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:09:54.532Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:09:58.376Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:10:02.286Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:10:06.216Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:10:10.016Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:10:13.746Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:10:18.077Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:10:21.885Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:10:25.746Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:10:29.474Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:10:33.122Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:10:36.865Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:10:40.564Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:10:44.278Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:10:48.208Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:10:51.969Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:10:55.733Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:10:59.517Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:11:03.297Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:11:06.919Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:11:10.742Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:11:14.643Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:11:18.637Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:11:22.327Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:11:26.155Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:11:30.831Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "id": "9",
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "turn.started",
+    "ts": "2026-09-07T14:09:47.667Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "turn_id": "8af91fab-5a91-5911-81d3-425e29d00d96",
+    "data": {
+      "prompt_id": "8af91fab-5a91-5911-81d3-425e29d00d96",
+      "text": "Create a new file named hello-gatekeeper.txt in the repository root containing exactly the word hello. Then stop and tell me you are done.",
+      "files": [],
+      "author": {
+        "id": "user_01M1Y23NSPKFFQR8420YNW9X07"
+      }
+    }
+  },
+  {
+    "id": "47",
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "message.updated",
+    "ts": "2026-09-07T14:09:51.732Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "turn_id": "8af91fab-5a91-5911-81d3-425e29d00d96",
+    "data": {
+      "part_id": "msg_tmp_hx8dmgl4bwr:text",
+      "message_id": "msg_tmp_hx8dmgl4bwr",
+      "kind": "text",
+      "text": "I’m creating the requested root-level file with the exact content and will verify its bytes."
+    }
+  },
+  {
+    "id": "51",
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "tool.updated",
+    "ts": "2026-09-07T14:09:52.673Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "turn_id": "8af91fab-5a91-5911-81d3-425e29d00d96",
+    "data": {
+      "part_id": "tool:exec-f2e9a452-14ea-49b3-933d-e9e06ba24a40",
+      "message_id": "turn-tools:8af91fab-5a91-5911-81d3-425e29d00d96",
+      "call_id": "exec-f2e9a452-14ea-49b3-933d-e9e06ba24a40",
+      "tool": "Editing files",
+      "status": "completed"
+    }
+  },
+  {
+    "id": "219",
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "message.updated",
+    "ts": "2026-09-07T14:10:01.502Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "turn_id": "8af91fab-5a91-5911-81d3-425e29d00d96",
+    "data": {
+      "part_id": "rs_029136c6325fdf09016a9ec5b6e5f087d2a640ce8327d47495:thought",
+      "message_id": "rs_029136c6325fdf09016a9ec5b6e5f087d2a640ce8327d47495",
+      "kind": "reasoning",
+      "text": "\n\n**Considering file content verification**\n\nI need to focus on containing the exact word \"hello\" along with a newline. When they say it should contain \"hello,\" I think about a typical file's content being something like \"hello\\n,\" which could be considered exactly that word. I may even want to check the bytes to ensure it's accurate. It seems using an exec in the commentary is a necessary step here. Let’s proceed with that!"
+    }
+  },
+  {
+    "id": "223",
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "tool.updated",
+    "ts": "2026-09-07T14:10:01.502Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "turn_id": "8af91fab-5a91-5911-81d3-425e29d00d96",
+    "data": {
+      "part_id": "tool:exec-7f96bbb2-7c1d-4d08-af15-188770693e2d",
+      "message_id": "turn-tools:8af91fab-5a91-5911-81d3-425e29d00d96",
+      "call_id": "exec-7f96bbb2-7c1d-4d08-af15-188770693e2d",
+      "tool": "od -An -tx1 -c hello-gatekeeper.txt",
+      "status": "completed"
+    }
+  },
+  {
+    "id": "229",
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "message.updated",
+    "ts": "2026-09-07T14:10:08.927Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "turn_id": "8af91fab-5a91-5911-81d3-425e29d00d96",
+    "data": {
+      "part_id": "msg_tmp_sszdaeppbe8:text",
+      "message_id": "msg_tmp_sszdaeppbe8",
+      "kind": "text",
+      "text": "Done."
+    }
+  },
+  {
+    "id": "237",
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "message.completed",
+    "ts": "2026-09-07T14:10:09.161Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "turn_id": "8af91fab-5a91-5911-81d3-425e29d00d96",
+    "data": {
+      "message_id": "msg_tmp_sszdaeppbe8",
+      "finish": "end_turn"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:11:34.614Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:11:38.520Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:11:42.362Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:11:46.233Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:11:50.336Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:11:54.187Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:11:57.994Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:12:01.692Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:12:05.399Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:12:09.276Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:12:13.092Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:12:16.831Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:12:20.601Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:12:24.387Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:12:28.212Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:12:31.981Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:12:35.742Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:12:39.380Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:12:43.066Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:12:47.370Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:12:51.088Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:12:55.527Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:12:59.304Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:13:03.090Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:13:07.112Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:13:11.190Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:13:16.032Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:13:20.287Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:13:24.209Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:13:28.289Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:13:32.921Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:13:37.761Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:13:41.636Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:13:45.655Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:13:49.540Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:13:53.649Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:13:57.519Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:14:02.413Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:14:06.269Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:14:10.120Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:14:14.280Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:14:18.423Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:14:22.748Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:14:27.480Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:14:31.320Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:14:35.327Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:14:39.117Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:14:43.359Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:14:47.205Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:14:52.028Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:14:56.797Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:15:00.854Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:15:04.696Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:15:08.915Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:15:12.918Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:15:17.394Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:15:21.616Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:15:25.275Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:15:29.164Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:15:32.873Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:15:36.948Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:15:40.666Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:15:44.475Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:15:48.388Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:15:52.782Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:15:57.328Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:16:01.462Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:16:05.660Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:16:10.355Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:16:14.816Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:16:19.709Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:16:23.878Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:16:27.590Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:16:32.308Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:16:36.319Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:16:40.736Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:16:44.891Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:16:48.713Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:16:52.518Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:16:56.289Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:17:00.443Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:17:04.634Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:17:08.887Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:17:12.718Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:17:16.690Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:17:20.546Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:17:24.215Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:17:27.979Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:17:32.375Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:17:36.342Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:17:40.969Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:17:44.814Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:17:49.015Z",
+    "sandbox_id": "c_ws3u957m58nw",
+    "data": {
+      "status": "running"
+    }
+  }
+]

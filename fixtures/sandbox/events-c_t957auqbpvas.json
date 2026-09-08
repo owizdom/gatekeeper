@@ -1,0 +1,495 @@
+[
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "snapshot",
+    "ts": "2026-09-07T13:59:40.040Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "sandbox": {
+        "id": "c_t957auqbpvas",
+        "object": "sandbox",
+        "status": "queued",
+        "title": "Gatekeeper approval smoke test",
+        "repos": [
+          {
+            "fullName": "owizdom/bento-open-book"
+          }
+        ],
+        "model": "gpt-5-6",
+        "agentRuntime": "codex",
+        "turn": {
+          "active": false
+        },
+        "usage": {
+          "llmRequestCount": 0,
+          "costMicroUsd": 0,
+          "creditsChargedMicros": 0
+        },
+        "metadata": {
+          "source": "gatekeeper-smoke",
+          "purpose": "verify-approval-blocking"
+        },
+        "error": null,
+        "createdAt": "2026-09-07T13:59:33.887Z",
+        "startedAt": null,
+        "completedAt": null,
+        "links": {
+          "self": "https://sparkles.dev/api/public/v1/sandboxes/c_t957auqbpvas",
+          "events": "https://sparkles.dev/api/public/v1/sandboxes/c_t957auqbpvas/events",
+          "messages": "https://sparkles.dev/api/public/v1/sandboxes/c_t957auqbpvas/messages"
+        }
+      },
+      "turn": null,
+      "resume_cursor": "0"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T13:59:40.040Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "queued"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T13:59:43.515Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T13:59:48.015Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T13:59:55.118Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:00:03.319Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:00:11.298Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:00:22.892Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:00:32.320Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:00:40.478Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:00:48.502Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:00:56.465Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:01:04.593Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:01:12.886Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:01:20.873Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:01:29.201Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:01:39.964Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:01:48.343Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:01:56.690Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:02:04.736Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:02:12.695Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:02:20.964Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:02:29.159Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:02:40.659Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:02:48.842Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:02:56.859Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:03:05.006Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:03:13.021Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:03:21.163Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:03:29.474Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:03:37.769Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:03:46.102Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:03:54.400Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:04:02.581Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "id": "9",
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "turn.started",
+    "ts": "2026-09-07T14:02:59.800Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "turn_id": "db82ec84-80f2-5a81-8ddb-260d81765580",
+    "data": {
+      "prompt_id": "db82ec84-80f2-5a81-8ddb-260d81765580",
+      "text": "List the files in the repository root, then read the README and summarise it in two sentences. Do not modify, create, or delete any file.",
+      "files": [],
+      "author": {
+        "id": "user_01M1Y23NSPKFFQR8420YNW9X07"
+      }
+    }
+  },
+  {
+    "id": "41",
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "message.updated",
+    "ts": "2026-09-07T14:03:05.060Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "turn_id": "db82ec84-80f2-5a81-8ddb-260d81765580",
+    "data": {
+      "part_id": "msg_tmp_yyegb2arx6i:text",
+      "message_id": "msg_tmp_yyegb2arx6i",
+      "kind": "text",
+      "text": "I’ll inspect the repository root and read the README without making any changes."
+    }
+  },
+  {
+    "id": "45",
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "tool.updated",
+    "ts": "2026-09-07T14:03:07.502Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "turn_id": "db82ec84-80f2-5a81-8ddb-260d81765580",
+    "data": {
+      "part_id": "tool:exec-e0382d0e-c00d-4e2f-beb1-a0931a7c7e9c",
+      "message_id": "turn-tools:db82ec84-80f2-5a81-8ddb-260d81765580",
+      "call_id": "exec-e0382d0e-c00d-4e2f-beb1-a0931a7c7e9c",
+      "tool": "printf '%s\\n' '---ROOT---'; find . -maxdepth 1 -mindepth 1 -printf '%f\\n' | sort; printf '%s\\n' '---README---'; readme=$(find . -maxdepth 1 -type f -iname 'readme*' -print -quit); if [ -n \"$readme\" ]; then printf '%s\\n' \"$readme\"; sed -n '1,240p' \"$readme\"; else printf '%s\\n' 'No root README found'; fi",
+      "status": "completed"
+    }
+  },
+  {
+    "id": "227",
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "message.updated",
+    "ts": "2026-09-07T14:03:15.003Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "turn_id": "db82ec84-80f2-5a81-8ddb-260d81765580",
+    "data": {
+      "part_id": "rs_0e4a19e60cd30e00016a9ec421437887d2ae1d0c4a20913232:thought",
+      "message_id": "rs_0e4a19e60cd30e00016a9ec421437887d2ae1d0c4a20913232",
+      "kind": "reasoning",
+      "text": "\n\n**Investigating directory structure**\n\nI’m noticing that the current working directory contains only the \"bento-open-book\" folder, suggesting it might be a nested repository. The user mentioned the repo root, but the environment's current directory seems to be a parent, which is a bit odd. I should check the present working directory and look deeper into the structure. There aren't any file modifications, but I might run a command to find files one level up to gather more information."
+    }
+  },
+  {
+    "id": "291",
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "message.updated",
+    "ts": "2026-09-07T14:03:15.228Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "turn_id": "db82ec84-80f2-5a81-8ddb-260d81765580",
+    "data": {
+      "part_id": "msg_tmp_mmzz72h56wn:text",
+      "message_id": "msg_tmp_mmzz72h56wn",
+      "kind": "text",
+      "text": "The supplied working directory contains a single nested `bento-open-book` directory and no README, so I’m checking that nested directory as the actual repository root."
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:04:11.032Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:04:19.181Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:04:27.316Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "running"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:04:36.021Z",
+    "sandbox_id": "c_t957auqbpvas",
+    "data": {
+      "status": "running"
+    }
+  }
+]

@@ -1,0 +1,447 @@
+[
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "snapshot",
+    "ts": "2026-09-07T14:05:56.707Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "sandbox": {
+        "id": "c_zt878xkc7b3z",
+        "object": "sandbox",
+        "status": "queued",
+        "title": "Gatekeeper approval smoke test",
+        "repos": [
+          {
+            "fullName": "owizdom/bento-open-book"
+          }
+        ],
+        "model": "gpt-5-6",
+        "agentRuntime": "codex",
+        "turn": {
+          "active": false
+        },
+        "usage": {
+          "llmRequestCount": 0,
+          "costMicroUsd": 0,
+          "creditsChargedMicros": 0
+        },
+        "metadata": {
+          "source": "gatekeeper-smoke",
+          "purpose": "verify-approval-blocking"
+        },
+        "error": null,
+        "createdAt": "2026-09-07T14:05:51.031Z",
+        "startedAt": null,
+        "completedAt": null,
+        "links": {
+          "self": "https://sparkles.dev/api/public/v1/sandboxes/c_zt878xkc7b3z",
+          "events": "https://sparkles.dev/api/public/v1/sandboxes/c_zt878xkc7b3z/events",
+          "messages": "https://sparkles.dev/api/public/v1/sandboxes/c_zt878xkc7b3z/messages"
+        }
+      },
+      "turn": null,
+      "resume_cursor": "0"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:05:56.707Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "queued"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:05:59.716Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:06:02.998Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:06:07.022Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:06:11.204Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:06:15.309Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:06:19.267Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:06:22.975Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:06:26.914Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:06:30.888Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:06:34.948Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:06:39.047Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:06:42.986Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:06:46.889Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:06:50.900Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:06:54.711Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:06:58.513Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:07:02.445Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:07:06.123Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:07:10.000Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:07:13.767Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:07:17.954Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:07:21.883Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:07:26.557Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:07:30.327Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:07:34.210Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:07:38.184Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:07:42.001Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:07:45.889Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:07:49.790Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:07:53.506Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:07:57.412Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:08:01.314Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:08:05.056Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:08:08.880Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:08:12.529Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:08:16.188Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:08:19.991Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:08:23.799Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T14:08:27.635Z",
+    "sandbox_id": "c_zt878xkc7b3z",
+    "data": {
+      "status": "creating"
+    }
+  }
+]

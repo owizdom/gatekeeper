@@ -1,0 +1,18 @@
+# Secrets — never commit
+.env
+.dev.vars
+*.pem
+*.key
+
+# Dependencies / build
+node_modules/
+dist/
+.wrangler/
+
+# macOS
+.DS_Store
+
+# NOTE: fixtures/sandbox/*.json is DELIBERATELY NOT ignored.
+# Those 8 captures are the entire offline test corpus. The previous
+# `events-*.json` rule matched them at any depth and would have
+# silently excluded the whole fixture set on the first commit.

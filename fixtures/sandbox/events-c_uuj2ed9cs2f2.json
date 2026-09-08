@@ -1,0 +1,57 @@
+[
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "snapshot",
+    "ts": "2026-09-07T13:57:47.792Z",
+    "sandbox_id": "c_uuj2ed9cs2f2",
+    "data": {
+      "sandbox": {
+        "id": "c_uuj2ed9cs2f2",
+        "object": "sandbox",
+        "status": "queued",
+        "title": "Gatekeeper approval smoke test",
+        "repos": [
+          {
+            "fullName": "owizdom/bento-open-book"
+          }
+        ],
+        "model": "gpt-5-6",
+        "agentRuntime": "codex",
+        "turn": {
+          "active": false
+        },
+        "usage": {
+          "llmRequestCount": 0,
+          "costMicroUsd": 0,
+          "creditsChargedMicros": 0
+        },
+        "metadata": {
+          "source": "gatekeeper-smoke",
+          "purpose": "verify-approval-blocking"
+        },
+        "error": null,
+        "createdAt": "2026-09-07T13:57:41.527Z",
+        "startedAt": null,
+        "completedAt": null,
+        "links": {
+          "self": "https://sparkles.dev/api/public/v1/sandboxes/c_uuj2ed9cs2f2",
+          "events": "https://sparkles.dev/api/public/v1/sandboxes/c_uuj2ed9cs2f2/events",
+          "messages": "https://sparkles.dev/api/public/v1/sandboxes/c_uuj2ed9cs2f2/messages"
+        }
+      },
+      "turn": null,
+      "resume_cursor": "0"
+    }
+  },
+  {
+    "object": "sandbox.event",
+    "version": "v1",
+    "type": "sandbox.status",
+    "ts": "2026-09-07T13:57:47.792Z",
+    "sandbox_id": "c_uuj2ed9cs2f2",
+    "data": {
+      "status": "queued"
+    }
+  }
+]
