@@ -9,15 +9,30 @@ Manifest flow. The Worker compiles today: `npx wrangler deploy --config worker/w
 
 ---
 
+## 0. Start in the repo
+
+Every command below is run from the repository root. Nothing here works from `~`:
+
+```bash
+cd ~/Desktop/code/gatekeeper     # wherever you cloned it
+npm install
+```
+
+If you see `Error: Cannot find module '/Users/you/bin/gk-app-setup.mjs'`, you are in your
+home directory, not the repo.
+
 ## 1. Register the GitHub App
 
 The click-through form has about twenty checkboxes and **one of them decides whether merging
 works at all**. Skip it. A manifest hands GitHub the whole configuration at once:
 
 ```bash
+cd ~/Desktop/code/gatekeeper               # must be the repo root
 node bin/gk-app-setup.mjs                  # personal account
 node bin/gk-app-setup.mjs --org YOUR_ORG   # organization
 ```
+
+Or, from anywhere: `npm --prefix ~/Desktop/code/gatekeeper run setup`
 
 Open the printed `http://127.0.0.1:8899`, click once, and you are done. It writes:
 
@@ -151,5 +166,6 @@ GITHUB_TOKEN=$(gh auth token) node bin/gk.ts apply --repo owner/name --pr 1
 | `401` and the key is PKCS#8 | RSA-PSS instead of `RSASSA-PKCS1-v1_5`, or base64 instead of base64**url** in the JWT |
 | `403` on merge only | `Contents: write` missing — merging pushes a commit |
 | Webhook `401 bad_signature` | secret mismatch, or something re-serialised the JSON before HMAC. Sign the **raw body string**. |
+| `Cannot find module '.../bin/gk-app-setup.mjs'` | you are in `~`, not the repo. `cd` to the repo root first. |
 | The system comments on its own comment, forever | `APP_SLUG` does not match the real slug |
 | Deliveries list red on events you do not care about | should be 200 `{ignored}`; a 4xx here is a bug |

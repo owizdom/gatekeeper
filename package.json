@@ -10,7 +10,10 @@
   "scripts": {
     "test": "node --test 'test/**/*.test.ts'",
     "route": "node bin/gk.ts route",
-    "smoke": "node smoke/smoke-approvals.mjs"
+    "smoke": "node smoke/smoke-approvals.mjs",
+    "setup": "node bin/gk-app-setup.mjs",
+    "deploy": "wrangler deploy --config worker/wrangler.jsonc",
+    "deploy:check": "wrangler deploy --config worker/wrangler.jsonc --dry-run"
   },
   "dependencies": {
     "yaml": "^2.6.1"
