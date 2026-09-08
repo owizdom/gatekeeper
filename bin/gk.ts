@@ -12,6 +12,7 @@ import { SparklesClient } from '../src/sandbox/client.ts'
 import { supervise } from '../src/sandbox/supervise.ts'
 import { GitHubApi } from '../src/github/api.ts'
 import { processPullRequest } from '../src/pipeline.ts'
+import { installationToken, installationIdForRepo } from '../src/github/app-auth.ts'
 import { parsePolicy } from '../src/schema/load.ts'
 import { route } from '../src/schema/resolve.ts'
 import { normalise, withFiles, ignoreReason, type PullRequestPayload, type FilesEntry } from '../src/github/events.ts'
@@ -95,8 +96,26 @@ switch (cmd) {
     const repo = arg('repo')
     const pr = Number(arg('pr', '0'))
     if (!repo || !pr) { console.error('apply needs --repo owner/name --pr N'); process.exit(1) }
-    const token = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN
-    if (!token) { console.error('set GITHUB_TOKEN (a PAT, or an installation token)'); process.exit(1) }
+    // 🛑 A user PAT CANNOT create check runs: POST /check-runs returns
+    // 403 "You must authenticate via a GitHub App". So prefer App credentials
+    // and mint an installation token, which is also exactly what the Worker
+    // uses — same auth, same behaviour, no surprises between CLI and server.
+    let token = ''
+    const appId = process.env.GITHUB_APP_ID
+    const appKey = process.env.GITHUB_PRIVATE_KEY_B64
+    if (appId && appKey) {
+      const env = { GITHUB_APP_ID: appId, GITHUB_PRIVATE_KEY_B64: appKey }
+      const installId = await installationIdForRepo(env, repo)
+      token = await installationToken(env, installId)
+      console.log(`  authenticated as the App (installation ${installId})`)
+    } else {
+      token = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN ?? ''
+      if (!token) {
+        console.error('set GITHUB_APP_ID + GITHUB_PRIVATE_KEY_B64 (preferred), or GITHUB_TOKEN')
+        process.exit(1)
+      }
+      console.log('  WARNING authenticating with a user token — check runs will 403')
+    }
 
     // DRY_RUN is the default here on purpose. Applying to a real PR should be a
     // thing you opt into, not something a typo does for you.
@@ -124,6 +143,7 @@ switch (cmd) {
     })
     console.log(`\n  decision=${res.decision.action} severity=${res.decision.severity} ci=${res.ciState}`)
     console.log(`  rules=[${res.decision.matchedRules.join(',') || '-'}]  applied=[${res.applied.join(',')}]`)
+    for (const f of res.failed) console.log(`  FAILED ${f}`)
     for (const r of res.decision.reasons) console.log(`    · ${r}`)
     if (dryRun) console.log(`\n  ${api.skipped.length} mutations skipped. Re-run with --apply to perform them.`)
     break

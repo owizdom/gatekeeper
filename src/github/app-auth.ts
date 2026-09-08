@@ -117,3 +117,19 @@ export async function installationToken(
 
 /** Test seam. */
 export function _clearTokenCache() { tokenCache.clear() }
+
+/** The installation id that covers a repo. Needed before a token can be minted. */
+export async function installationIdForRepo(
+  env: AppAuthEnv,
+  repoFullName: string,
+  now = Date.now(),
+  fetchImpl: typeof fetch = fetch,
+): Promise<number> {
+  const key = await importAppKey(env.GITHUB_PRIVATE_KEY_B64)
+  const jwt = await appJwt(env.GITHUB_APP_ID, key, Math.floor(now / 1000))
+  const res = await fetchImpl(`https://api.github.com/repos/${repoFullName}/installation`, {
+    headers: { Authorization: `Bearer ${jwt}`, Accept: 'application/vnd.github+json', 'User-Agent': 'gatekeeper' },
+  })
+  if (!res.ok) throw new Error(`no installation for ${repoFullName}: ${res.status} ${await res.text()}`)
+  return ((await res.json()) as { id: number }).id
+}

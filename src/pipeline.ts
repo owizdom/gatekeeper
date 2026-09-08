@@ -23,6 +23,8 @@ export interface PipelineResult {
   decision: Decision
   ciState: CiState
   applied: string[]
+  /** Actions that threw. Non-empty means the decision was only partly delivered. */
+  failed: string[]
   merged: boolean
 }
 
@@ -85,28 +87,67 @@ export async function processPullRequest(
   const decision = route(policyText, full, { now, ciState })
   log(`#${facts.number} -> ${decision.action} (sev=${decision.severity}, ci=${ciState}, rules=[${decision.matchedRules.join(',')}])`)
 
-  await api.upsertComment(repo, facts.number, renderComment(decision, { dryRun }))
-  applied.push('comment')
+  // Each action is attempted independently. A check run that 403s must not stop
+  // the comment, the label or the review request from landing — a partial
+  // decision delivered is far better than a decision that vanished because one
+  // permission was short.
+  const failed: string[] = []
+  const attempt = async (name: string, fn: () => Promise<unknown>) => {
+    try {
+      await fn()
+      applied.push(name)
+    } catch (e) {
+      failed.push(`${name}: ${(e as Error).message.split('\n')[0]}`)
+      log(`  ${name} FAILED — ${(e as Error).message.split('\n')[0]}`)
+    }
+  }
 
-  await api.upsertCheckRun(repo, full.headSha, renderCheckRun(decision))
-  applied.push('check-run')
+  await attempt('comment', () => api.upsertComment(repo, facts.number, renderComment(decision, { dryRun })))
+  await attempt('check-run', () => api.upsertCheckRun(repo, full.headSha, renderCheckRun(decision)))
+  await attempt('labels', () => api.addLabels(repo, facts.number, labelsFor(decision)))
 
-  await api.addLabels(repo, facts.number, labelsFor(decision))
-  applied.push('labels')
-
+  // 🛑 GitHub refuses (422) a review request naming the PR's own author. That is
+  // not a nuisance to retry around — it means the policy asked for a reviewer
+  // who cannot review, so NOBODY INDEPENDENT has been asked. Say so on the PR
+  // instead of failing quietly and looking like review was requested.
   if (decision.reviewers.length && decision.action !== 'merge') {
-    await api.requestReviewers(repo, facts.number, decision.reviewers)
-    applied.push('review-request')
+    const self = facts.author.toLowerCase()
+    const requestable = decision.reviewers.filter(r => r.toLowerCase() !== self)
+    const skipped = decision.reviewers.filter(r => r.toLowerCase() === self)
+
+    if (requestable.length) {
+      await attempt('review-request', () => api.requestReviewers(repo, facts.number, requestable))
+    }
+    if (skipped.length) {
+      decision.reasons.push(
+        `Policy names \`${skipped.join('`, `')}\` as reviewer, but GitHub cannot request a review ` +
+          `from the author of the pull request. **No independent reviewer has been requested.**`,
+      )
+      applied.push('self-review-noted')
+      // Re-post the comment so the warning is actually visible on the PR.
+      await attempt('comment-updated', () =>
+        api.upsertComment(repo, facts.number, renderComment(decision, { dryRun })),
+      )
+    }
   }
 
   let merged = false
   if (decision.action === 'merge') {
-    const res = await api.merge(repo, facts.number, full.headSha)
-    merged = res?.merged === true
-    applied.push(merged ? 'merged' : 'merge-attempted')
+    // Merge only if nothing above failed. A missing check run means the human
+    // signal is incomplete, and merging on an incomplete signal is the exact
+    // failure this system exists to prevent.
+    if (failed.length) {
+      log(`  merge withheld — ${failed.length} action(s) failed first`)
+      applied.push('merge-withheld')
+    } else {
+      await attempt('merge', async () => {
+        const res = await api.merge(repo, facts.number, full.headSha)
+        merged = res?.merged === true
+      })
+    }
   }
 
-  return { decision, ciState, applied, merged }
+  return { decision, ciState, applied, failed, merged }
 }
 
 function policyRequiredChecks(text: string | null): string[] {
