@@ -1,0 +1,53 @@
+{
+  "webhook": {
+    "action": "opened",
+    "number": 101,
+    "pull_request": {
+      "number": 101,
+      "title": "PR 101",
+      "draft": false,
+      "state": "open",
+      "user": {
+        "login": "owizdom",
+        "type": "User"
+      },
+      "head": {
+        "ref": "sparkles/copy/hero-text",
+        "sha": "0000000000000000000000000000000000000065"
+      },
+      "base": {
+        "ref": "main"
+      },
+      "additions": 20,
+      "deletions": 0,
+      "changed_files": 2
+    },
+    "repository": {
+      "full_name": "owizdom/gatekeeper-testbed",
+      "default_branch": "main"
+    },
+    "installation": {
+      "id": 12345678
+    },
+    "sender": {
+      "login": "owizdom",
+      "type": "User"
+    }
+  },
+  "files": [
+    {
+      "filename": "content/index.mdx",
+      "status": "modified",
+      "additions": 10,
+      "deletions": 0,
+      "patch": "+ hello"
+    },
+    {
+      "filename": "src/styles/app.css",
+      "status": "modified",
+      "additions": 10,
+      "deletions": 0,
+      "patch": "+ hello"
+    }
+  ]
+}

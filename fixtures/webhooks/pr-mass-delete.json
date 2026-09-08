@@ -1,0 +1,46 @@
+{
+  "webhook": {
+    "action": "opened",
+    "number": 106,
+    "pull_request": {
+      "number": 106,
+      "title": "PR 106",
+      "draft": false,
+      "state": "open",
+      "user": {
+        "login": "owizdom",
+        "type": "User"
+      },
+      "head": {
+        "ref": "sparkles/copy/cull",
+        "sha": "000000000000000000000000000000000000006a"
+      },
+      "base": {
+        "ref": "main"
+      },
+      "additions": 0,
+      "deletions": 500,
+      "changed_files": 1
+    },
+    "repository": {
+      "full_name": "owizdom/gatekeeper-testbed",
+      "default_branch": "main"
+    },
+    "installation": {
+      "id": 12345678
+    },
+    "sender": {
+      "login": "owizdom",
+      "type": "User"
+    }
+  },
+  "files": [
+    {
+      "filename": "content/old.md",
+      "status": "removed",
+      "additions": 0,
+      "deletions": 500,
+      "patch": "- gone"
+    }
+  ]
+}

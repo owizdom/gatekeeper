@@ -1,0 +1,53 @@
+{
+  "webhook": {
+    "action": "opened",
+    "number": 103,
+    "pull_request": {
+      "number": 103,
+      "title": "PR 103",
+      "draft": false,
+      "state": "open",
+      "user": {
+        "login": "owizdom",
+        "type": "User"
+      },
+      "head": {
+        "ref": "sparkles/copy/tweak",
+        "sha": "0000000000000000000000000000000000000067"
+      },
+      "base": {
+        "ref": "main"
+      },
+      "additions": 20,
+      "deletions": 0,
+      "changed_files": 2
+    },
+    "repository": {
+      "full_name": "owizdom/gatekeeper-testbed",
+      "default_branch": "main"
+    },
+    "installation": {
+      "id": 12345678
+    },
+    "sender": {
+      "login": "owizdom",
+      "type": "User"
+    }
+  },
+  "files": [
+    {
+      "filename": "content/ok.md",
+      "status": "modified",
+      "additions": 10,
+      "deletions": 0,
+      "patch": "+ hello"
+    },
+    {
+      "filename": "src/whatever/thing.ts",
+      "status": "modified",
+      "additions": 10,
+      "deletions": 0,
+      "patch": "+ hello"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "webhook": {
+    "action": "opened",
+    "number": 105,
+    "pull_request": {
+      "number": 105,
+      "title": "PR 105",
+      "draft": false,
+      "state": "open",
+      "user": {
+        "login": "owizdom",
+        "type": "User"
+      },
+      "head": {
+        "ref": "sparkles/refactor/move",
+        "sha": "0000000000000000000000000000000000000069"
+      },
+      "base": {
+        "ref": "main"
+      },
+      "additions": 10,
+      "deletions": 0,
+      "changed_files": 1
+    },
+    "repository": {
+      "full_name": "owizdom/gatekeeper-testbed",
+      "default_branch": "main"
+    },
+    "installation": {
+      "id": 12345678
+    },
+    "sender": {
+      "login": "owizdom",
+      "type": "User"
+    }
+  },
+  "files": [
+    {
+      "filename": "docs/moved.ts",
+      "status": "renamed",
+      "additions": 10,
+      "deletions": 0,
+      "patch": "+ hello",
+      "previous_filename": "src/auth/session.ts"
+    }
+  ]
+}
