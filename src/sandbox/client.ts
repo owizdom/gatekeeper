@@ -34,6 +34,44 @@ export interface Sandbox {
   [k: string]: unknown
 }
 
+export type FileStatus = 'added' | 'deleted' | 'modified' | 'renamed' | 'untracked' | null
+
+export interface FileEntry {
+  name: string
+  path: string
+  kind: 'directory' | 'file'
+  depth: number
+  size: number | null
+  additions: number
+  deletions: number
+  previousPath: string | null
+  mtimeMs: number | null
+  status: FileStatus
+}
+
+export interface FileTree {
+  directory: string
+  entries: FileEntry[]
+  partialWarnings: string[]
+  scope: 'all'
+}
+
+export interface FileVersion { content: string; hash: string; ref: string }
+
+export interface FileContent {
+  path: string
+  status: FileStatus
+  binary: boolean
+  size: number | null
+  previousPath: string | null
+  working: FileVersion | null
+  head: FileVersion | null
+  base: FileVersion | null
+  reviewHead: FileVersion | null
+  editable: false
+  editReason: string | null
+}
+
 /** POST /approvals/{id} returns a command receipt, not the approval itself. */
 export interface RunCommandReceipt {
   commandId: string
@@ -130,6 +168,27 @@ export class SparklesClient {
 
   interrupt(sandboxId: string) {
     return api<unknown>(this.key, `/sandboxes/${sandboxId}/interrupt`, { method: 'POST' })
+  }
+
+  /**
+   * The repository tree as the sandbox sees it right now. This is how you check
+   * what an agent actually wrote WITHOUT publishing a PR — which matters,
+   * because a sandbox can report tool.updated status:"completed" and still have
+   * nothing publishable.
+   */
+  listFiles(sandboxId: string, directory = '', repo?: string) {
+    const q = new URLSearchParams()
+    if (directory) q.set('directory', directory)
+    if (repo) q.set('repo', repo)
+    const qs = q.toString()
+    return api<FileTree>(this.key, `/sandboxes/${sandboxId}/files/tree${qs ? `?${qs}` : ''}`)
+  }
+
+  /** One file, with its working-tree and base versions. Protected files (.env) are never returned. */
+  readFile(sandboxId: string, path: string, repo?: string) {
+    const q = new URLSearchParams({ path })
+    if (repo) q.set('repo', repo)
+    return api<FileContent>(this.key, `/sandboxes/${sandboxId}/files/content?${q.toString()}`)
   }
 
   /** Idempotent. */

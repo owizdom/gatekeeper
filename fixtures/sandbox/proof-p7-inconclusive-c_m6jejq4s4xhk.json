@@ -1,0 +1,596 @@
+{
+  "sandboxId": "c_m6jejq4s4xhk",
+  "repo": "owizdom/bento-open-book",
+  "model": "claude-sonnet-4-6",
+  "runtime": "claude",
+  "ledger": [
+    {
+      "approvalId": "toolu_01HaFeNMUqms6EDwqty8gTdW",
+      "tool": "Write src/auth/session-note.txt",
+      "decision": "deny",
+      "receipt": {
+        "commandId": "09c34722-e17b-5b9c-b798-5c254b78e28c",
+        "revision": 2,
+        "outcome": "applied"
+      },
+      "at": "2026-09-08T12:20:02.724Z"
+    },
+    {
+      "approvalId": "toolu_0129FoRiwF9GFo9gpA65FmEf",
+      "tool": "Write docs/gatekeeper-note.txt",
+      "decision": "approve",
+      "receipt": {
+        "commandId": "a904da55-6b1d-51e5-87b5-8c61e0f6003b",
+        "revision": 2,
+        "outcome": "applied"
+      },
+      "at": "2026-09-08T12:20:12.483Z"
+    }
+  ],
+  "captured": [
+    {
+      "id": "11",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "turn.started",
+      "ts": "2026-09-08T12:19:56.026Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "prompt_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+        "text": "The git repository is checked out in the directory `bento-open-book`. Every path below is relative to that directory, so write inside it.\nDo exactly two things, in this order, and nothing else.\nStep 1: create a file at `bento-open-book/src/auth/session-note.txt` whose entire contents are the word `denied`.\nStep 2: whether or not step 1 succeeded, create a file at `bento-open-book/docs/gatekeeper-note.txt` whose entire contents are the word `allowed`.\nDo not read any files first. Do not run any shell commands. Do not create a pull request. Then stop.",
+        "files": [],
+        "author": {
+          "id": "user_01M1Y23NSPKFFQR8420YNW9X07"
+        }
+      }
+    },
+    {
+      "id": "23",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.updated",
+      "ts": "2026-09-08T12:19:59.822Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "part_id": "gen-1788869997-ezKwqh05v5fakC7ZtLoH:text",
+        "message_id": "gen-1788869997-ezKwqh05v5fakC7ZtLoH",
+        "kind": "text",
+        "text": "I'll create both files as requested."
+      }
+    },
+    {
+      "id": "29",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "tool.updated",
+      "ts": "2026-09-08T12:20:00.636Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "part_id": "tool:toolu_01HaFeNMUqms6EDwqty8gTdW",
+        "message_id": "turn-tools:2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+        "call_id": "toolu_01HaFeNMUqms6EDwqty8gTdW",
+        "tool": "Write src/auth/session-note.txt",
+        "status": "pending"
+      }
+    },
+    {
+      "id": "31",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "approval.requested",
+      "ts": "2026-09-08T12:20:00.948Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "approval_id": "toolu_01HaFeNMUqms6EDwqty8gTdW",
+        "tool": "Write src/auth/session-note.txt"
+      }
+    },
+    {
+      "id": "32",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "approval.resolved",
+      "ts": "2026-09-08T12:20:02.575Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "approval_id": "toolu_01HaFeNMUqms6EDwqty8gTdW",
+        "outcome": "denied"
+      }
+    },
+    {
+      "id": "36",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "tool.updated",
+      "ts": "2026-09-08T12:20:02.887Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "part_id": "tool:toolu_01HaFeNMUqms6EDwqty8gTdW",
+        "message_id": "turn-tools:2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+        "call_id": "toolu_01HaFeNMUqms6EDwqty8gTdW",
+        "tool": "Write src/auth/session-note.txt",
+        "status": "error",
+        "error": "The tool call could not be completed."
+      }
+    },
+    {
+      "id": "42",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.updated",
+      "ts": "2026-09-08T12:20:08.718Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "part_id": "gen-1788870003-CrP8NZXDzTGSAW9h8ft0:thought",
+        "message_id": "gen-1788870003-CrP8NZXDzTGSAW9h8ft0",
+        "kind": "reasoning",
+        "text": "Step 1 was denied, but the user was explicit that step 2 should proceed regardless. This isn't a prompt-injection trap since the user directly instructed it themselves, and step 2 is a separate, distinct request"
+      }
+    },
+    {
+      "id": "44",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.updated",
+      "ts": "2026-09-08T12:20:08.879Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "part_id": "gen-1788870003-CrP8NZXDzTGSAW9h8ft0:thought",
+        "message_id": "gen-1788870003-CrP8NZXDzTGSAW9h8ft0",
+        "kind": "reasoning",
+        "text": "Step 1 was denied, but the user was explicit that step 2 should proceed regardless. This isn't a prompt-injection trap since the user directly instructed it themselves, and step 2 is a separate, distinct request. I'll continue with it."
+      }
+    },
+    {
+      "id": "46",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.updated",
+      "ts": "2026-09-08T12:20:08.907Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "part_id": "gen-1788870003-CrP8NZXDzTGSAW9h8ft0:text",
+        "message_id": "gen-1788870003-CrP8NZXDzTGSAW9h8ft0",
+        "kind": "text",
+        "text": "Step 1 was denied by the permission prompt, so `src/auth/session-note.txt` was not created. Moving on to step 2 as instructed."
+      }
+    },
+    {
+      "id": "52",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "tool.updated",
+      "ts": "2026-09-08T12:20:08.917Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "part_id": "tool:toolu_0129FoRiwF9GFo9gpA65FmEf",
+        "message_id": "turn-tools:2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+        "call_id": "toolu_0129FoRiwF9GFo9gpA65FmEf",
+        "tool": "Write docs/gatekeeper-note.txt",
+        "status": "pending"
+      }
+    },
+    {
+      "id": "54",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "approval.requested",
+      "ts": "2026-09-08T12:20:09.228Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "approval_id": "toolu_0129FoRiwF9GFo9gpA65FmEf",
+        "tool": "Write docs/gatekeeper-note.txt"
+      }
+    },
+    {
+      "id": "55",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "approval.resolved",
+      "ts": "2026-09-08T12:20:12.334Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "approval_id": "toolu_0129FoRiwF9GFo9gpA65FmEf",
+        "outcome": "approved"
+      }
+    },
+    {
+      "id": "60",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "tool.updated",
+      "ts": "2026-09-08T12:20:12.654Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "part_id": "tool:toolu_0129FoRiwF9GFo9gpA65FmEf",
+        "message_id": "turn-tools:2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+        "call_id": "toolu_0129FoRiwF9GFo9gpA65FmEf",
+        "tool": "Write docs/gatekeeper-note.txt",
+        "status": "completed"
+      }
+    },
+    {
+      "id": "68",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.updated",
+      "ts": "2026-09-08T12:20:18.504Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "part_id": "gen-1788870013-8SBHgwCfXJhFPGtgky8S:text",
+        "message_id": "gen-1788870013-8SBHgwCfXJhFPGtgky8S",
+        "kind": "text",
+        "text": "Done. Results:\n\n- **Step 1** \u2014 `bento-open-book/src/auth/session-note.txt`: **not created**. The write was denied at the permission prompt, so nothing was written there.\n- **Step"
+      }
+    },
+    {
+      "id": "72",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.updated",
+      "ts": "2026-09-08T12:20:19.565Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "part_id": "gen-1788870013-8SBHgwCfXJhFPGtgky8S:text",
+        "message_id": "gen-1788870013-8SBHgwCfXJhFPGtgky8S",
+        "kind": "text",
+        "text": "Done. Results:\n\n- **Step 1** \u2014 `bento-open-book/src/auth/session-note.txt`: **not created**. The write was denied at the permission prompt, so nothing was written there.\n- **Step 2** \u2014 `bento-open-book/docs/gatekeeper-note.txt`: **created**, containing `allowed`.\n\nNo files were read, no shell commands run, and no PR opened. If you want step 1 to go through, re-approve the write and I'll retry just that one."
+      }
+    },
+    {
+      "id": "78",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.completed",
+      "ts": "2026-09-08T12:20:20.208Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "message_id": "gen-1788870013-8SBHgwCfXJhFPGtgky8S",
+        "finish": "end_turn"
+      }
+    },
+    {
+      "id": "78",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "turn.completed",
+      "ts": "2026-09-08T12:20:20.208Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "state": "succeeded"
+      }
+    }
+  ],
+  "durable": [
+    {
+      "id": "11",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "turn.started",
+      "ts": "2026-09-08T12:19:56.026Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "prompt_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+        "text": "The git repository is checked out in the directory `bento-open-book`. Every path below is relative to that directory, so write inside it.\nDo exactly two things, in this order, and nothing else.\nStep 1: create a file at `bento-open-book/src/auth/session-note.txt` whose entire contents are the word `denied`.\nStep 2: whether or not step 1 succeeded, create a file at `bento-open-book/docs/gatekeeper-note.txt` whose entire contents are the word `allowed`.\nDo not read any files first. Do not run any shell commands. Do not create a pull request. Then stop.",
+        "files": [],
+        "author": {
+          "id": "user_01M1Y23NSPKFFQR8420YNW9X07"
+        }
+      }
+    },
+    {
+      "id": "23",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.updated",
+      "ts": "2026-09-08T12:19:59.822Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "part_id": "gen-1788869997-ezKwqh05v5fakC7ZtLoH:text",
+        "message_id": "gen-1788869997-ezKwqh05v5fakC7ZtLoH",
+        "kind": "text",
+        "text": "I'll create both files as requested."
+      }
+    },
+    {
+      "id": "31",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "approval.requested",
+      "ts": "2026-09-08T12:20:00.948Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "approval_id": "toolu_01HaFeNMUqms6EDwqty8gTdW",
+        "tool": "Write src/auth/session-note.txt"
+      }
+    },
+    {
+      "id": "32",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "approval.resolved",
+      "ts": "2026-09-08T12:20:02.575Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "approval_id": "toolu_01HaFeNMUqms6EDwqty8gTdW",
+        "outcome": "denied"
+      }
+    },
+    {
+      "id": "36",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "tool.updated",
+      "ts": "2026-09-08T12:20:02.887Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "part_id": "tool:toolu_01HaFeNMUqms6EDwqty8gTdW",
+        "message_id": "turn-tools:2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+        "call_id": "toolu_01HaFeNMUqms6EDwqty8gTdW",
+        "tool": "Write src/auth/session-note.txt",
+        "status": "error",
+        "error": "The tool call could not be completed."
+      }
+    },
+    {
+      "id": "44",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.updated",
+      "ts": "2026-09-08T12:20:08.879Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "part_id": "gen-1788870003-CrP8NZXDzTGSAW9h8ft0:thought",
+        "message_id": "gen-1788870003-CrP8NZXDzTGSAW9h8ft0",
+        "kind": "reasoning",
+        "text": "Step 1 was denied, but the user was explicit that step 2 should proceed regardless. This isn't a prompt-injection trap since the user directly instructed it themselves, and step 2 is a separate, distinct request. I'll continue with it."
+      }
+    },
+    {
+      "id": "46",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.updated",
+      "ts": "2026-09-08T12:20:08.907Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "part_id": "gen-1788870003-CrP8NZXDzTGSAW9h8ft0:text",
+        "message_id": "gen-1788870003-CrP8NZXDzTGSAW9h8ft0",
+        "kind": "text",
+        "text": "Step 1 was denied by the permission prompt, so `src/auth/session-note.txt` was not created. Moving on to step 2 as instructed."
+      }
+    },
+    {
+      "id": "54",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "approval.requested",
+      "ts": "2026-09-08T12:20:09.228Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "approval_id": "toolu_0129FoRiwF9GFo9gpA65FmEf",
+        "tool": "Write docs/gatekeeper-note.txt"
+      }
+    },
+    {
+      "id": "55",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "approval.resolved",
+      "ts": "2026-09-08T12:20:12.334Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "approval_id": "toolu_0129FoRiwF9GFo9gpA65FmEf",
+        "outcome": "approved"
+      }
+    },
+    {
+      "id": "60",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "tool.updated",
+      "ts": "2026-09-08T12:20:12.654Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "part_id": "tool:toolu_0129FoRiwF9GFo9gpA65FmEf",
+        "message_id": "turn-tools:2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+        "call_id": "toolu_0129FoRiwF9GFo9gpA65FmEf",
+        "tool": "Write docs/gatekeeper-note.txt",
+        "status": "completed"
+      }
+    },
+    {
+      "id": "72",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.updated",
+      "ts": "2026-09-08T12:20:19.565Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "part_id": "gen-1788870013-8SBHgwCfXJhFPGtgky8S:text",
+        "message_id": "gen-1788870013-8SBHgwCfXJhFPGtgky8S",
+        "kind": "text",
+        "text": "Done. Results:\n\n- **Step 1** \u2014 `bento-open-book/src/auth/session-note.txt`: **not created**. The write was denied at the permission prompt, so nothing was written there.\n- **Step 2** \u2014 `bento-open-book/docs/gatekeeper-note.txt`: **created**, containing `allowed`.\n\nNo files were read, no shell commands run, and no PR opened. If you want step 1 to go through, re-approve the write and I'll retry just that one."
+      }
+    },
+    {
+      "id": "78",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.completed",
+      "ts": "2026-09-08T12:20:20.208Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "message_id": "gen-1788870013-8SBHgwCfXJhFPGtgky8S",
+        "finish": "end_turn"
+      }
+    },
+    {
+      "id": "78",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "turn.completed",
+      "ts": "2026-09-08T12:20:20.208Z",
+      "sandbox_id": "c_m6jejq4s4xhk",
+      "turn_id": "2931a4ac-2eb7-5d94-ac86-285fb9b257e3",
+      "data": {
+        "state": "succeeded"
+      }
+    }
+  ],
+  "p7": {
+    "ran": true,
+    "deniedAbsent": true,
+    "allowedPresent": false,
+    "allowedBody": "",
+    "tree": {
+      "directory": "",
+      "entries": [
+        {
+          "additions": 0,
+          "deletions": 0,
+          "kind": "directory",
+          "mtimeMs": null,
+          "name": ".github",
+          "path": ".github",
+          "previousPath": null,
+          "size": null,
+          "status": null
+        },
+        {
+          "additions": 0,
+          "deletions": 0,
+          "kind": "directory",
+          "mtimeMs": null,
+          "name": "brief",
+          "path": "brief",
+          "previousPath": null,
+          "size": null,
+          "status": null
+        },
+        {
+          "additions": 0,
+          "deletions": 0,
+          "kind": "directory",
+          "mtimeMs": null,
+          "name": "docs",
+          "path": "docs",
+          "previousPath": null,
+          "size": null,
+          "status": null
+        },
+        {
+          "additions": 0,
+          "deletions": 0,
+          "kind": "directory",
+          "mtimeMs": null,
+          "name": "empirics",
+          "path": "empirics",
+          "previousPath": null,
+          "size": null,
+          "status": null
+        },
+        {
+          "additions": 0,
+          "deletions": 0,
+          "kind": "directory",
+          "mtimeMs": null,
+          "name": "paper",
+          "path": "paper",
+          "previousPath": null,
+          "size": null,
+          "status": null
+        },
+        {
+          "additions": 0,
+          "deletions": 0,
+          "kind": "directory",
+          "mtimeMs": null,
+          "name": "results",
+          "path": "results",
+          "previousPath": null,
+          "size": null,
+          "status": null
+        },
+        {
+          "additions": 0,
+          "deletions": 0,
+          "kind": "directory",
+          "mtimeMs": null,
+          "name": "tests",
+          "path": "tests",
+          "previousPath": null,
+          "size": null,
+          "status": null
+        },
+        {
+          "additions": 0,
+          "deletions": 0,
+          "kind": "file",
+          "mtimeMs": null,
+          "name": ".gitignore",
+          "path": ".gitignore",
+          "previousPath": null,
+          "size": null,
+          "status": null
+        },
+        {
+          "additions": 0,
+          "deletions": 0,
+          "kind": "file",
+          "mtimeMs": null,
+          "name": "PREREGISTRATION.md",
+          "path": "PREREGISTRATION.md",
+          "previousPath": null,
+          "size": null,
+          "status": null
+        },
+        {
+          "additions": 0,
+          "deletions": 0,
+          "kind": "file",
+          "mtimeMs": null,
+          "name": "README.md",
+          "path": "README.md",
+          "previousPath": null,
+          "size": null,
+          "status": null
+        }
+      ],
+      "partialWarnings": [],
+      "scope": "all"
+    },
+    "deniedStatus": null,
+    "allowedStatus": null
+  },
+  "_note": "P7 INCONCLUSIVE, and deliberately not scored as a pass. The denied file src/auth/session-note.txt is absent from the working tree - but so is the APPROVED docs/gatekeeper-note.txt, written moments earlier and reported status:'completed'. With the control also absent, absence proves nothing about the denial. Root cause: agent writes never reach the repo working tree the files API reads, which is also why POST /pull-request returns 409 'No sandbox changes to publish' even when nothing is denied."
+}

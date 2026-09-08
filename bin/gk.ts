@@ -10,6 +10,8 @@
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs'
 import { SparklesClient } from '../src/sandbox/client.ts'
 import { supervise } from '../src/sandbox/supervise.ts'
+import { GitHubApi } from '../src/github/api.ts'
+import { processPullRequest } from '../src/pipeline.ts'
 import { parsePolicy } from '../src/schema/load.ts'
 import { route } from '../src/schema/resolve.ts'
 import { normalise, withFiles, ignoreReason, type PullRequestPayload, type FilesEntry } from '../src/github/events.ts'
@@ -88,6 +90,45 @@ switch (cmd) {
     break
   }
 
+  // ── The single-PR path, against a real repo ────────────────────────────
+  case 'apply': {
+    const repo = arg('repo')
+    const pr = Number(arg('pr', '0'))
+    if (!repo || !pr) { console.error('apply needs --repo owner/name --pr N'); process.exit(1) }
+    const token = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN
+    if (!token) { console.error('set GITHUB_TOKEN (a PAT, or an installation token)'); process.exit(1) }
+
+    // DRY_RUN is the default here on purpose. Applying to a real PR should be a
+    // thing you opt into, not something a typo does for you.
+    const dryRun = !argv.includes('--apply')
+    const api = new GitHubApi({ token, dryRun, log: m => console.log(`  ${m}`) })
+
+    const raw = await api.getPull(repo, pr)
+    if (!raw) { console.error(`could not read ${repo}#${pr}`); process.exit(1) }
+    const head = raw.head as { sha: string; ref: string }
+    const user = raw.user as { login: string; type: string }
+    const facts = {
+      number: pr,
+      author: user?.login ?? '',
+      authorType: (user?.type === 'Bot' ? 'Bot' : 'User') as 'Bot' | 'User',
+      files: [],
+      baseRef: (raw.base as { ref: string })?.ref ?? '',
+      headSha: head?.sha ?? '',
+      draft: raw.draft === true,
+    }
+
+    console.log(`${dryRun ? 'DRY RUN' : 'APPLYING'} ${repo}#${pr} by ${facts.author}\n`)
+    const res = await processPullRequest(facts, {
+      api, repo, policyText: readPolicy(), now: Date.now(), dryRun,
+      log: m => console.log(`  ${m}`),
+    })
+    console.log(`\n  decision=${res.decision.action} severity=${res.decision.severity} ci=${res.ciState}`)
+    console.log(`  rules=[${res.decision.matchedRules.join(',') || '-'}]  applied=[${res.applied.join(',')}]`)
+    for (const r of res.decision.reasons) console.log(`    · ${r}`)
+    if (dryRun) console.log(`\n  ${api.skipped.length} mutations skipped. Re-run with --apply to perform them.`)
+    break
+  }
+
   // ── Sparkles integration ───────────────────────────────────────────────
   case 'launch':
   case 'supervise': {
@@ -151,6 +192,10 @@ switch (cmd) {
   gk route   [--fixture F | --dir D]         decide, one line each
   gk explain [--fixture F]                   decide, with every reason
              [--ci success|failure] [--batch]
+
+  gk apply   --repo owner/name --pr N        run the single-PR path against a
+             [--apply]                        real PR. DRY RUN unless --apply.
+                                              needs GITHUB_TOKEN
 
   Sparkles integration (needs SPARKLES_API_KEY):
 

@@ -71,6 +71,21 @@ node bin/gk.ts explain --fixture fixtures/webhooks/pr-mixed-paths.json
 No API key, no GitHub App, no deploy. The policy engine is pure, so the CLI runs the exact
 same bytes the server would.
 
+Against a real pull request — **dry run by default**, so a typo cannot mutate anything:
+
+```
+$ GITHUB_TOKEN=... gk apply --repo owner/name --pr 1
+
+DRY RUN owner/name#1 by owizdom
+  #1 -> review (sev=block, ci=unknown, rules=[self-modification])
+  DRY_RUN POST .../issues/1/comments        {...}
+  DRY_RUN POST .../check-runs               {...}
+  DRY_RUN POST .../issues/1/labels          {"labels":["gatekeeper:needs-review"]}
+  DRY_RUN POST .../pulls/1/requested_reviewers {"reviewers":["owizdom"]}
+
+  4 mutations skipped. Re-run with --apply to perform them.
+```
+
 ## Using it with Sparkles
 
 ```bash
@@ -216,18 +231,50 @@ denies for the wrong reason, and wrongly denies allowed paths. Always re-derive 
 🛑 **The deny call carries no reason field.** The API accepts `{decision}` and nothing else, so
 the "why" is delivered to the agent as a follow-up message and recorded in the ledger.
 
-### Not yet verified
+### One thing that cannot be verified in this environment, and why
 
-- **The on-disk effect of a denial.** Denial is proven at the event level, but a control run
-  that denied *nothing* still could not publish a PR (`409 — "No sandbox changes to publish"`),
-  which means `status: "completed"` is not by itself evidence that a file reached the git tree.
-  That is being chased through the sandbox files API, and it is unresolved.
+The obvious follow-up question is: *did the denial actually stop the file existing?* I could
+not answer that here, and the reason is worth stating rather than hiding.
+
+Reading the sandbox's own working tree (`GET /files/tree`, no PR involved) after a run:
+
+```
+tree: 10 entries at root, 0 with a change status
+dir src/auth/ -> 0 entries: (empty)              <- the DENIED file is absent
+dir docs/     -> decision_logs, FINDINGS.md      <- the APPROVED file is absent too
+```
+
+The denied file is absent — but so is the approved one, written moments earlier and reported
+as `status: "completed"`. When the control is also absent, absence proves nothing about the
+denial. **A passing "denied file is absent" check here would be a false positive, so it is
+not claimed as a pass.**
+
+The underlying cause is that in these sandboxes the agent's writes do not reach the repository
+working tree the API reads, which is also exactly why `POST /pull-request` returns
+`409 — "No sandbox changes to publish"` even for a run that denies nothing.
+
+What *does* support the denial, independently of the filesystem:
+
+- the event sequence, reproduced on four separate sandboxes
+- `tool.updated status:"error"` with `"The tool call could not be completed."`
+- the agent's own account, unprompted:
+  > "Step 1 — not completed. The write to `src/auth/session-note.txt` was denied by the
+  > permission prompt, **so that file does not exist.** I did not retry it."
+
+Treat the on-disk question as open.
+
+### Built and tested
+
+Policy engine, pre-flight evaluator and supervisor, fail-closed loader, webhook normalisation
+and signature verification, GitHub App auth (PKCS#8/RS256), the REST layer with `DRY_RUN`,
+the single-PR pipeline, the Worker hot path, and the CLI.
 
 ### Not yet built
 
-Batching (function 3), auto-merge execution, the Cloudflare Worker and the GitHub App. The
-policy engine, the pre-flight supervisor and the CLI are done and tested. See
-[`DESIGN.md`](DESIGN.md) for the full architecture.
+Batching (function 3) needs the Durable Object. The GitHub App itself has to be registered
+through the browser, and the Worker has not been deployed. Auto-merge is implemented but has
+never merged a real PR — `AUTOMERGE_ENABLED` defaults to off and `--apply` is opt-in.
+See [`DESIGN.md`](DESIGN.md) for the full architecture.
 
 ---
 
@@ -237,7 +284,9 @@ policy engine, the pre-flight supervisor and the CLI are done and tested. See
 src/policy/     pure decision engine — no network, no fs, no clock
 src/schema/     policy loading, fail-closed
 src/sandbox/    Sparkles client, polling transport, pre-flight supervisor
-src/github/     webhook normalisation
+src/github/     webhook normalisation, HMAC verify, App auth, REST with DRY_RUN
+src/render/     decision -> comment, check run, labels
+worker/         the <50ms hot path: verify -> parse -> triage -> 200
 bin/gk.ts       the CLI
 fixtures/       recorded sandbox events + webhook payloads
 smoke/          the original probe, unmodified
@@ -248,5 +297,5 @@ same bytes run in a Worker and in the CLI, and lets every rule be tested offline
 credits burned.
 
 ```bash
-npm test     # 90 tests, no network, no credentials
+npm test     # 117 tests, no network, no credentials
 ```

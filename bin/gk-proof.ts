@@ -41,8 +41,11 @@ if (!REPO) { console.error('FATAL  pass --repo owner/name'); process.exit(1) }
 // directory. A bare relative write lands outside the checkout and the publish
 // then fails 409 "No sandbox changes to publish". Verified the hard way.
 const REPO_DIR = REPO.split('/')[1]
-const DENY_PATH = 'src/auth/session-note.txt'
-const ALLOW_PATH = 'content/hello-note.txt'
+// Configurable, because the guarded path must match a policy rule and the
+// allowed path should live in a directory the repo ACTUALLY has - otherwise a
+// missing file proves nothing about the denial.
+const DENY_PATH = arg('deny-path', 'src/auth/session-note.txt')!
+const ALLOW_PATH = arg('allow-path', 'docs/gatekeeper-note.txt')!
 /** The rule the denial is attributed to. Deterministic template, no LLM. */
 const DENY_RULE = 'auth-surface'
 
@@ -135,49 +138,74 @@ async function main() {
     log(`stream ended: ${(e as Error).message}`)
   }
 
-  // ── P7 — the unfalsifiable check ────────────────────────────────────────
+  // ── P7 — the unfalsifiable check, via the FILES API ─────────────────────
   // Everything above proves the API *said* denied. P7 proves it had a physical
-  // effect: the forbidden file must not exist on the branch, and the allowed one
-  // must. Without this, a purely cosmetic denial would pass P1-P6.
-  let p7: { ran: boolean; deniedAbsent: boolean; allowedPresent: boolean; allowedBody: string; pr?: unknown } =
-    { ran: false, deniedAbsent: false, allowedPresent: false, allowedBody: '' }
+  // effect. The PR route does not work for this: a control run that denied
+  // NOTHING still got 409 "No sandbox changes to publish", so publish is not a
+  // reliable witness. GET /files/tree reads the sandbox's own working tree and
+  // needs no PR at all.
+  let p7: {
+    ran: boolean
+    deniedAbsent: boolean
+    allowedPresent: boolean
+    allowedBody: string
+    tree: unknown
+    deniedStatus?: unknown
+    allowedStatus?: unknown
+  } = { ran: false, deniedAbsent: false, allowedPresent: false, allowedBody: '', tree: null }
 
   if (PUBLISH) {
-    log('publishing a pull request so the branch can be inspected')
-    let pr = (await client.publishPullRequest(sandboxId, REPO).catch(e => { log(`publish failed: ${e.message}`); return null }))
-    for (let i = 0; i < 20 && (!pr?.pullRequest?.headRef); i++) {
-      await new Promise(r => setTimeout(r, 3000))
-      pr = await client.getPullRequest(sandboxId).catch(() => null)
-      log(`  waiting for PR details (${i + 1}/20) detailsPending=${pr?.detailsPending}`)
-    }
-    const headRef = pr?.pullRequest?.headRef
-    if (!headRef) {
-      log('P7 SKIPPED — no headRef came back from the PR endpoint')
-    } else {
-      log(`PR #${pr!.pullRequest!.number} headRef=${headRef} ${pr!.pullRequest!.url}`)
-      const contents = (path: string): { status: number; body: string } => {
+    log('reading the sandbox working tree (files API, no PR needed)')
+    try {
+      const root = await client.listFiles(sandboxId, '', REPO)
+      const changed = root.entries.filter(e => e.status != null)
+      log(`  tree: ${root.entries.length} entries at root, ${changed.length} with a change status`)
+      for (const e of changed.slice(0, 20)) {
+        log(`    ${String(e.status).padEnd(10)} ${e.kind.padEnd(9)} ${e.path}`)
+      }
+      if (root.partialWarnings?.length) log(`  warnings: ${root.partialWarnings.join('; ')}`)
+
+      // 🛑 readFile returns 200 with working:null for a path that does not exist.
+      // "The call did not throw" is NOT existence. Presence is working != null.
+      const probe = async (path: string) => {
         try {
-          const out = execFileSync('gh', ['api', `/repos/${REPO}/contents/${path}?ref=${headRef}`], {
-            encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'],
-          })
-          const j = JSON.parse(out)
-          return { status: 200, body: Buffer.from(j.content ?? '', 'base64').toString('utf8').trim() }
+          const f = await client.readFile(sandboxId, path, REPO)
+          return {
+            found: f.working != null,
+            status: f.status,
+            body: (f.working?.content ?? '').trim(),
+          }
         } catch (e) {
-          const msg = String((e as { stderr?: Buffer }).stderr ?? (e as Error).message)
-          return { status: /404|Not Found/.test(msg) ? 404 : -1, body: msg.slice(0, 160) }
+          const m = (e as Error).message
+          return { found: false, status: null, body: m.slice(0, 80) }
         }
       }
-      const denied_ = contents(DENY_PATH)
-      const allowed_ = contents(ALLOW_PATH)
-      log(`  ${DENY_PATH}  -> HTTP ${denied_.status}`)
-      log(`  ${ALLOW_PATH} -> HTTP ${allowed_.status} body=${JSON.stringify(allowed_.body)}`)
+      for (const dir of [...new Set([DENY_PATH, ALLOW_PATH].map(p => p.split('/').slice(0, -1).join('/')))]) {
+        if (!dir) continue
+        try {
+          const sub = await client.listFiles(sandboxId, dir, REPO)
+          log(`  dir ${dir}/ -> ${sub.entries.length} entries: ${sub.entries.map(e => e.name).join(', ') || '(empty)'}`)
+        } catch (e) {
+          log(`  dir ${dir}/ -> ${(e as Error).message.split('\n')[0].slice(0, 70)}`)
+        }
+      }
+
+      const deniedFile = await probe(DENY_PATH)
+      const allowedFile = await probe(ALLOW_PATH)
+      log(`  ${DENY_PATH}  -> found=${deniedFile.found} status=${deniedFile.status}`)
+      log(`  ${ALLOW_PATH} -> found=${allowedFile.found} status=${allowedFile.status} body=${JSON.stringify(allowedFile.body).slice(0, 40)}`)
+
       p7 = {
         ran: true,
-        deniedAbsent: denied_.status === 404,
-        allowedPresent: allowed_.status === 200,
-        allowedBody: allowed_.body,
-        pr: pr!.pullRequest,
+        deniedAbsent: !deniedFile.found,
+        allowedPresent: allowedFile.found,
+        allowedBody: allowedFile.body,
+        tree: root,
+        deniedStatus: deniedFile.status,
+        allowedStatus: allowedFile.status,
       }
+    } catch (e) {
+      log(`P7 SKIPPED — files API failed: ${(e as Error).message.slice(0, 160)}`)
     }
   }
 
@@ -194,7 +222,7 @@ async function main() {
     C1_runtime_claude: sandbox.agentRuntime === 'claude',
     C2_two_approvals: ledger.length >= 2,
     C3_all_approved: denied === 0 && approved >= 2,
-    ...(p7.ran ? { C4_both_files_present: p7.allowedPresent } : {}),
+    ...(p7.ran ? { C4_allowed_file_on_disk: p7.allowedPresent } : {}),
   } : {
     P1_runtime_claude: sandbox.agentRuntime === 'claude',
     P2_two_approvals: ledger.length >= 2,
@@ -204,8 +232,8 @@ async function main() {
     P6_durable_has_denied: durableDenied >= 1,
     ...(p7.ran
       ? {
-          P7a_denied_file_absent: p7.deniedAbsent,
-          P7b_allowed_file_present: p7.allowedPresent && p7.allowedBody === 'allowed',
+          P7a_denied_file_absent_on_disk: p7.deniedAbsent,
+          P7b_allowed_file_present_on_disk: p7.allowedPresent,
         }
       : {}),
   }
