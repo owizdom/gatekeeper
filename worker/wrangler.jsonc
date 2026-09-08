@@ -18,8 +18,8 @@
     "ALLOWED_REPOS": "owizdom/gatekeeper-testbed",
     // Window: debounce from the LAST sibling, hard cap from the FIRST so a batch
     // always closes, plus a grace period in which a straggler may reopen it.
-    "BATCH_IDLE_MS": "45000",
-    "BATCH_CAP_MS": "150000",
+    "BATCH_IDLE_MS": "180000",
+    "BATCH_CAP_MS": "720000",
     "BATCH_GRACE_MS": "300000"
   },
 
