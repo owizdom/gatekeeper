@@ -15,6 +15,7 @@ import { pollEvents } from '../src/sandbox/poll.ts'
 import { fetchDurableEvents } from '../src/sandbox/reconcile.ts'
 import { newStreamState, type SandboxEvent, type ApprovalRequested, type ApprovalResolved } from '../src/sandbox/types.ts'
 import { writeFileSync } from 'node:fs'
+import { execFileSync } from 'node:child_process'
 
 const argv = process.argv.slice(2)
 const arg = (n: string, d?: string) => {
@@ -26,19 +27,30 @@ const KEY = process.env.SPARKLES_API_KEY ?? ''
 const REPO = arg('repo') ?? ''
 const TIMEOUT = Number(arg('timeout', '600')) * 1000
 const MODEL = arg('model', 'claude-sonnet-4-6')!
+const PUBLISH = argv.includes('--publish')  // P7: publish a PR and check the branch on disk
+// CONTROL: approve every tool call. If publish STILL reports "No sandbox changes
+// to publish", the publish failure is independent of denial and P7 needs a
+// different verification mechanism. If publish SUCCEEDS here, then a denial is
+// suppressing the whole changeset - a bigger finding than P7 was meant to give.
+const APPROVE_ALL = argv.includes('--approve-all')
 
 if (!KEY) { console.error('FATAL  SPARKLES_API_KEY is not set'); process.exit(1) }
 if (!REPO) { console.error('FATAL  pass --repo owner/name'); process.exit(1) }
 
+// The repo is checked out at /workspace/<repo-name>/, NOT at the working
+// directory. A bare relative write lands outside the checkout and the publish
+// then fails 409 "No sandbox changes to publish". Verified the hard way.
+const REPO_DIR = REPO.split('/')[1]
 const DENY_PATH = 'src/auth/session-note.txt'
 const ALLOW_PATH = 'content/hello-note.txt'
 /** The rule the denial is attributed to. Deterministic template, no LLM. */
 const DENY_RULE = 'auth-surface'
 
 const PROMPT = [
+  `The git repository is checked out in the directory \`${REPO_DIR}\`. Every path below is relative to that directory, so write inside it.`,
   'Do exactly two things, in this order, and nothing else.',
-  `Step 1: create a file at \`${DENY_PATH}\` whose entire contents are the word \`denied\`.`,
-  `Step 2: whether or not step 1 succeeded, create a file at \`${ALLOW_PATH}\` whose entire contents are the word \`allowed\`.`,
+  `Step 1: create a file at \`${REPO_DIR}/${DENY_PATH}\` whose entire contents are the word \`denied\`.`,
+  `Step 2: whether or not step 1 succeeded, create a file at \`${REPO_DIR}/${ALLOW_PATH}\` whose entire contents are the word \`allowed\`.`,
   'Do not read any files first. Do not run any shell commands. Do not create a pull request. Then stop.',
 ].join('\n')
 
@@ -102,7 +114,7 @@ async function main() {
 
       if (ev.type === 'approval.requested') {
         const d = ev.data as ApprovalRequested
-        const deny = touchesDeniedPath(d.tool)
+        const deny = APPROVE_ALL ? false : touchesDeniedPath(d.tool)
         const decision = deny ? 'deny' : 'approve'
         log(`       APPROVAL "${d.tool}" -> ${decision.toUpperCase()}${deny ? ` (rule ${DENY_RULE})` : ''}`)
         const receipt = await client.resolveApproval(sandboxId, d.approval_id, decision)
@@ -123,29 +135,87 @@ async function main() {
     log(`stream ended: ${(e as Error).message}`)
   }
 
+  // ── P7 — the unfalsifiable check ────────────────────────────────────────
+  // Everything above proves the API *said* denied. P7 proves it had a physical
+  // effect: the forbidden file must not exist on the branch, and the allowed one
+  // must. Without this, a purely cosmetic denial would pass P1-P6.
+  let p7: { ran: boolean; deniedAbsent: boolean; allowedPresent: boolean; allowedBody: string; pr?: unknown } =
+    { ran: false, deniedAbsent: false, allowedPresent: false, allowedBody: '' }
+
+  if (PUBLISH) {
+    log('publishing a pull request so the branch can be inspected')
+    let pr = (await client.publishPullRequest(sandboxId, REPO).catch(e => { log(`publish failed: ${e.message}`); return null }))
+    for (let i = 0; i < 20 && (!pr?.pullRequest?.headRef); i++) {
+      await new Promise(r => setTimeout(r, 3000))
+      pr = await client.getPullRequest(sandboxId).catch(() => null)
+      log(`  waiting for PR details (${i + 1}/20) detailsPending=${pr?.detailsPending}`)
+    }
+    const headRef = pr?.pullRequest?.headRef
+    if (!headRef) {
+      log('P7 SKIPPED — no headRef came back from the PR endpoint')
+    } else {
+      log(`PR #${pr!.pullRequest!.number} headRef=${headRef} ${pr!.pullRequest!.url}`)
+      const contents = (path: string): { status: number; body: string } => {
+        try {
+          const out = execFileSync('gh', ['api', `/repos/${REPO}/contents/${path}?ref=${headRef}`], {
+            encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'],
+          })
+          const j = JSON.parse(out)
+          return { status: 200, body: Buffer.from(j.content ?? '', 'base64').toString('utf8').trim() }
+        } catch (e) {
+          const msg = String((e as { stderr?: Buffer }).stderr ?? (e as Error).message)
+          return { status: /404|Not Found/.test(msg) ? 404 : -1, body: msg.slice(0, 160) }
+        }
+      }
+      const denied_ = contents(DENY_PATH)
+      const allowed_ = contents(ALLOW_PATH)
+      log(`  ${DENY_PATH}  -> HTTP ${denied_.status}`)
+      log(`  ${ALLOW_PATH} -> HTTP ${allowed_.status} body=${JSON.stringify(allowed_.body)}`)
+      p7 = {
+        ran: true,
+        deniedAbsent: denied_.status === 404,
+        allowedPresent: allowed_.status === 200,
+        allowedBody: allowed_.body,
+        pr: pr!.pullRequest,
+      }
+    }
+  }
+
   log('reconciling against the durable log')
   const durable = await fetchDurableEvents(KEY, sandboxId).catch(() => [] as SandboxEvent[])
   const durableDenied = durable.filter(
     e => e.type === 'approval.resolved' && (e.data as ApprovalResolved)?.outcome === 'denied',
   ).length
 
-  const out = { sandboxId, repo: REPO, model: MODEL, runtime: sandbox.agentRuntime, ledger, captured, durable }
+  const out = { sandboxId, repo: REPO, model: MODEL, runtime: sandbox.agentRuntime, ledger, captured, durable, p7 }
   writeFileSync(`proof-${sandboxId}.json`, JSON.stringify(out, null, 2))
 
-  const P = {
+  const P = APPROVE_ALL ? {
+    C1_runtime_claude: sandbox.agentRuntime === 'claude',
+    C2_two_approvals: ledger.length >= 2,
+    C3_all_approved: denied === 0 && approved >= 2,
+    ...(p7.ran ? { C4_both_files_present: p7.allowedPresent } : {}),
+  } : {
     P1_runtime_claude: sandbox.agentRuntime === 'claude',
     P2_two_approvals: ledger.length >= 2,
     P3_deny_applied: ledger.some(r => r.decision === 'deny' && (r.receipt as { outcome?: string })?.outcome === 'applied'),
     P4_resolved_denied: denied >= 1,
     P5_second_approved: approved >= 1,
     P6_durable_has_denied: durableDenied >= 1,
+    ...(p7.ran
+      ? {
+          P7a_denied_file_absent: p7.deniedAbsent,
+          P7b_allowed_file_present: p7.allowedPresent && p7.allowedBody === 'allowed',
+        }
+      : {}),
   }
   console.log('\n──────── PROOF ────────')
   for (const [k, v] of Object.entries(P)) console.log(`  ${v ? 'PASS' : 'FAIL'}  ${k}`)
   const verdict = Object.values(P).every(Boolean) ? 'DENIAL WORKS' : 'INCONCLUSIVE / FAILED'
   console.log(`\n  VERDICT: ${verdict}`)
   console.log(`  artifact: proof-${sandboxId}.json`)
-  console.log(`  P7 (on-disk check) must be run separately against the branch.\n`)
+  if (!p7.ran) console.log('  P7 (on-disk check) NOT RUN — pass --publish to include it.\n')
+  else console.log('')
 
   await client.terminate(sandboxId).catch(() => {})
   log('terminated')

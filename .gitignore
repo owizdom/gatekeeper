@@ -16,3 +16,6 @@ dist/
 # Those 8 captures are the entire offline test corpus. The previous
 # `events-*.json` rule matched them at any depth and would have
 # silently excluded the whole fixture set on the first commit.
+
+# Livestream art. Strategy, not code - kept out of the public repo.
+stream/

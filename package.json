@@ -8,7 +8,7 @@
     "node": ">=24"
   },
   "scripts": {
-    "test": "node --test 'test/*.test.ts'",
+    "test": "node --test 'test/**/*.test.ts'",
     "route": "node bin/gk.ts route",
     "smoke": "node smoke/smoke-approvals.mjs"
   },

@@ -138,4 +138,9 @@ export class SparklesClient {
       body: repo ? { repo } : {},
     })
   }
+
+  /** Poll target while `detailsPending` is true — headRef is not always immediate. */
+  getPullRequest(sandboxId: string) {
+    return api<PullRequestResult>(this.key, `/sandboxes/${sandboxId}/pull-request`)
+  }
 }

@@ -11,7 +11,7 @@ const HINTS: Record<number, string> = {
   401: 'Key rejected or revoked. Mint a fresh one.',
   402: 'no_credits — the org cannot reserve another run. Add credits.',
   403: 'Grant cannot reach that repo. Connect it in Sparkles first.',
-  409: 'concurrency_limit_exceeded — another sandbox is holding your slot. Terminate it.',
+  409: 'Conflict. Either concurrency_limit_exceeded (another sandbox holds your slot), or\n       invalid_request "No sandbox changes to publish" — the agent wrote outside the\n       repo checkout, which lives at /workspace/<repo-name>/, not the working directory.',
   429: 'rate_limited.',
 }
 
