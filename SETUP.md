@@ -153,8 +153,9 @@ GITHUB_TOKEN=$(gh auth token) node bin/gk.ts apply --repo owner/name --pr 1
 1. `DRY_RUN` → `"false"`, redeploy. Now comments, check runs, labels and review requests are
    real. **Auto-merge still cannot fire.**
 2. Watch a few PRs. Confirm the decisions match what `gk route` says offline.
-3. Only then `AUTOMERGE_ENABLED` → `"true"`. Auto-merge has never merged a real PR; give it
-   one supervised run before you leave it alone.
+3. Only then `AUTOMERGE_ENABLED` → `"true"`. It is checked against the exact string `"true"`,
+   so anything else — including `"1"` — leaves merging off. Give it one supervised run before
+   you leave it alone.
 
 ---
 

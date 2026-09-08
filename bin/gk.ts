@@ -142,6 +142,10 @@ switch (cmd) {
     console.log(`${dryRun ? 'DRY RUN' : 'APPLYING'} ${repo}#${pr} by ${facts.author}\n`)
     const res = await processPullRequest(facts, {
       api, repo, policyText: readPolicy(), now: Date.now(), dryRun,
+      // Deliberately separate from --apply. --apply means "perform the
+      // comment/label/review actions"; merging your main branch deserves its
+      // own word.
+      automergeEnabled: argv.includes('--automerge'),
       log: m => console.log(`  ${m}`),
     })
     console.log(`\n  decision=${res.decision.action} severity=${res.decision.severity} ci=${res.ciState}`)
@@ -301,7 +305,8 @@ switch (cmd) {
   gk batch   --repo owner/name [--apply]     group open PRs by intent and decide
                                               the batch as one thread
   gk apply   --repo owner/name --pr N        run the single-PR path against a
-             [--apply]                        real PR. DRY RUN unless --apply.
+             [--apply] [--automerge]          real PR. DRY RUN unless --apply.
+                                              merging needs --automerge too.
                                               needs GITHUB_TOKEN
 
   Sparkles integration (needs SPARKLES_API_KEY):

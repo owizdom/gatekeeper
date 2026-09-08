@@ -41,7 +41,7 @@ export interface FlushResult {
 }
 
 export async function flushBatch(input: FlushInput): Promise<FlushResult> {
-  const { api, repo, batchKey, prs, policyText, requiredChecks, now, dryRun, log = () => {} } = input
+  const { api, repo, batchKey, prs, policyText, requiredChecks, now, dryRun, automergeEnabled = false, log = () => {} } = input
   const applied: string[] = []
   const failed: string[] = []
   const attempt = async (name: string, fn: () => Promise<unknown>) => {
@@ -89,7 +89,10 @@ export async function flushBatch(input: FlushInput): Promise<FlushResult> {
     if (reviewable.length && only.action !== 'merge') {
       await attempt('review-request', () => api.requestReviewers(repo, pr.number, reviewable))
     }
-    if (only.action === 'merge' && !failed.length) {
+    if (only.action === 'merge' && !automergeEnabled) {
+      log('merge withheld — automerge is disabled')
+      applied.push('merge-withheld:automerge-disabled')
+    } else if (only.action === 'merge' && !failed.length) {
       await attempt('merge', () => api.merge(repo, pr.number, pr.headSha))
     }
     return { decision, applied, failed, solo }

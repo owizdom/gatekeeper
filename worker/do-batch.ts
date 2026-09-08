@@ -156,6 +156,8 @@ export class BatchDO {
       const api = new GitHubApi({
         token,
         dryRun: this.env.DRY_RUN !== 'false',
+        // Opt-IN, and only on the exact string. Anything else means off.
+        automergeEnabled: this.env.AUTOMERGE_ENABLED === 'true',
         log: m => console.log(`[${meta.batchKey}] ${m}`),
       })
 
@@ -167,6 +169,8 @@ export class BatchDO {
         api, repo: meta.repo, batchKey: meta.batchKey, prs, policyText,
         requiredChecks: required, now: Date.now(),
         dryRun: this.env.DRY_RUN !== 'false',
+        // Opt-IN, and only on the exact string. Anything else means off.
+        automergeEnabled: this.env.AUTOMERGE_ENABLED === 'true',
         log: m => console.log(`[${meta.batchKey}] ${m}`),
       })
 

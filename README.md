@@ -277,7 +277,8 @@ the single-PR pipeline, the Worker hot path, and the CLI.
 
 Batching (function 3) needs the Durable Object. The GitHub App itself has to be registered
 through the browser, and the Worker has not been deployed. Auto-merge is implemented but has
-never merged a real PR — `AUTOMERGE_ENABLED` defaults to off and `--apply` is opt-in.
+merges only when auto-merge is explicitly enabled: `AUTOMERGE_ENABLED="true"` on the Worker,
+or `--automerge` on the CLI, on top of `--apply`. Both default to off.
 See [`DESIGN.md`](DESIGN.md) for the full architecture.
 
 ---

@@ -16,6 +16,16 @@ export interface PipelineDeps {
   policyText: string | null
   now: number
   dryRun?: boolean
+  /**
+   * 🛑 THE KILL SWITCH. Must be passed explicitly and default to FALSE.
+   *
+   * This was previously declared in the Worker Env, set in wrangler.jsonc,
+   * written into .dev.vars and documented in two places as the auto-merge
+   * safety - and never read by any code path. A control that is announced but
+   * unread is worse than no control, because people rely on it. Gatekeeper
+   * exists to catch exactly this class of failure, so it may not ship one.
+   */
+  automergeEnabled?: boolean
   log?: (msg: string) => void
 }
 
@@ -59,7 +69,7 @@ export async function processPullRequest(
   facts: PrFacts,
   deps: PipelineDeps,
 ): Promise<PipelineResult> {
-  const { api, repo, policyText, now, dryRun, log = () => {} } = deps
+  const { api, repo, policyText, now, dryRun, automergeEnabled = false, log = () => {} } = deps
   const applied: string[] = []
 
   const { files, truncated } = await api.listPullFiles(repo, facts.number)
@@ -136,7 +146,10 @@ export async function processPullRequest(
     // Merge only if nothing above failed. A missing check run means the human
     // signal is incomplete, and merging on an incomplete signal is the exact
     // failure this system exists to prevent.
-    if (failed.length) {
+    if (!automergeEnabled) {
+      log('  merge withheld — automerge is disabled')
+      applied.push('merge-withheld:automerge-disabled')
+    } else if (failed.length) {
       log(`  merge withheld — ${failed.length} action(s) failed first`)
       applied.push('merge-withheld')
     } else {
