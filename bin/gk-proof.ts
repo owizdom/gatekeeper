@@ -211,7 +211,13 @@ async function main() {
   }
   console.log('\n──────── PROOF ────────')
   for (const [k, v] of Object.entries(P)) console.log(`  ${v ? 'PASS' : 'FAIL'}  ${k}`)
-  const verdict = Object.values(P).every(Boolean) ? 'DENIAL WORKS' : 'INCONCLUSIVE / FAILED'
+  // The label must describe what was actually tested. A control run denies
+  // nothing, so calling it "DENIAL WORKS" would put a false claim on an
+  // evidence artifact that outlives the terminal it was printed in.
+  const allPassed = Object.values(P).every(Boolean)
+  const verdict = APPROVE_ALL
+    ? (allPassed ? 'CONTROL OK - nothing denied, all approvals granted' : 'CONTROL FAILED')
+    : (allPassed ? 'DENIAL WORKS' : 'INCONCLUSIVE / FAILED')
   console.log(`\n  VERDICT: ${verdict}`)
   console.log(`  artifact: proof-${sandboxId}.json`)
   if (!p7.ran) console.log('  P7 (on-disk check) NOT RUN — pass --publish to include it.\n')

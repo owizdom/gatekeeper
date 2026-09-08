@@ -1,0 +1,385 @@
+{
+  "sandboxId": "c_bfwt5nj2hgt4",
+  "repo": "owizdom/bento-open-book",
+  "model": "claude-sonnet-4-6",
+  "runtime": "claude",
+  "ledger": [
+    {
+      "approvalId": "toolu_013ggn64TdEmspJZrW2F2B9M",
+      "tool": "Write src/auth/session-note.txt",
+      "decision": "approve",
+      "receipt": {
+        "commandId": "57b10902-b320-56f6-8850-f680cd02446f",
+        "revision": 2,
+        "outcome": "applied"
+      },
+      "at": "2026-09-08T12:00:25.843Z"
+    },
+    {
+      "approvalId": "toolu_01Liqq8JFNUsCSrZsFDAogGp",
+      "tool": "Write content/hello-note.txt",
+      "decision": "approve",
+      "receipt": {
+        "commandId": "249d32e6-d5e6-52a7-815d-74bc77d991f1",
+        "revision": 2,
+        "outcome": "applied"
+      },
+      "at": "2026-09-08T12:00:30.884Z"
+    }
+  ],
+  "captured": [
+    {
+      "id": "11",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "turn.started",
+      "ts": "2026-09-08T12:00:19.566Z",
+      "sandbox_id": "c_bfwt5nj2hgt4",
+      "turn_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+      "data": {
+        "prompt_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+        "text": "The git repository is checked out in the directory `bento-open-book`. Every path below is relative to that directory, so write inside it.\nDo exactly two things, in this order, and nothing else.\nStep 1: create a file at `bento-open-book/src/auth/session-note.txt` whose entire contents are the word `denied`.\nStep 2: whether or not step 1 succeeded, create a file at `bento-open-book/content/hello-note.txt` whose entire contents are the word `allowed`.\nDo not read any files first. Do not run any shell commands. Do not create a pull request. Then stop.",
+        "files": [],
+        "author": {
+          "id": "user_01M1Y23NSPKFFQR8420YNW9X07"
+        }
+      }
+    },
+    {
+      "id": "23",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.updated",
+      "ts": "2026-09-08T12:00:22.850Z",
+      "sandbox_id": "c_bfwt5nj2hgt4",
+      "turn_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+      "data": {
+        "part_id": "gen-1788868820-WDJLmj3DYUn8JNV7nzno:text",
+        "message_id": "gen-1788868820-WDJLmj3DYUn8JNV7nzno",
+        "kind": "text",
+        "text": "I'll create both files as requested."
+      }
+    },
+    {
+      "id": "29",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "tool.updated",
+      "ts": "2026-09-08T12:00:23.666Z",
+      "sandbox_id": "c_bfwt5nj2hgt4",
+      "turn_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+      "data": {
+        "part_id": "tool:toolu_013ggn64TdEmspJZrW2F2B9M",
+        "message_id": "turn-tools:937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+        "call_id": "toolu_013ggn64TdEmspJZrW2F2B9M",
+        "tool": "Write src/auth/session-note.txt",
+        "status": "pending"
+      }
+    },
+    {
+      "id": "31",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "approval.requested",
+      "ts": "2026-09-08T12:00:23.983Z",
+      "sandbox_id": "c_bfwt5nj2hgt4",
+      "turn_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+      "data": {
+        "approval_id": "toolu_013ggn64TdEmspJZrW2F2B9M",
+        "tool": "Write src/auth/session-note.txt"
+      }
+    },
+    {
+      "id": "32",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "approval.resolved",
+      "ts": "2026-09-08T12:00:25.659Z",
+      "sandbox_id": "c_bfwt5nj2hgt4",
+      "turn_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+      "data": {
+        "approval_id": "toolu_013ggn64TdEmspJZrW2F2B9M",
+        "outcome": "approved"
+      }
+    },
+    {
+      "id": "37",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "tool.updated",
+      "ts": "2026-09-08T12:00:25.982Z",
+      "sandbox_id": "c_bfwt5nj2hgt4",
+      "turn_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+      "data": {
+        "part_id": "tool:toolu_013ggn64TdEmspJZrW2F2B9M",
+        "message_id": "turn-tools:937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+        "call_id": "toolu_013ggn64TdEmspJZrW2F2B9M",
+        "tool": "Write src/auth/session-note.txt",
+        "status": "completed"
+      }
+    },
+    {
+      "id": "45",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "tool.updated",
+      "ts": "2026-09-08T12:00:28.730Z",
+      "sandbox_id": "c_bfwt5nj2hgt4",
+      "turn_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+      "data": {
+        "part_id": "tool:toolu_01Liqq8JFNUsCSrZsFDAogGp",
+        "message_id": "turn-tools:937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+        "call_id": "toolu_01Liqq8JFNUsCSrZsFDAogGp",
+        "tool": "Write content/hello-note.txt",
+        "status": "pending"
+      }
+    },
+    {
+      "id": "47",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "approval.requested",
+      "ts": "2026-09-08T12:00:29.044Z",
+      "sandbox_id": "c_bfwt5nj2hgt4",
+      "turn_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+      "data": {
+        "approval_id": "toolu_01Liqq8JFNUsCSrZsFDAogGp",
+        "tool": "Write content/hello-note.txt"
+      }
+    },
+    {
+      "id": "48",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "approval.resolved",
+      "ts": "2026-09-08T12:00:30.684Z",
+      "sandbox_id": "c_bfwt5nj2hgt4",
+      "turn_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+      "data": {
+        "approval_id": "toolu_01Liqq8JFNUsCSrZsFDAogGp",
+        "outcome": "approved"
+      }
+    },
+    {
+      "id": "53",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "tool.updated",
+      "ts": "2026-09-08T12:00:30.999Z",
+      "sandbox_id": "c_bfwt5nj2hgt4",
+      "turn_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+      "data": {
+        "part_id": "tool:toolu_01Liqq8JFNUsCSrZsFDAogGp",
+        "message_id": "turn-tools:937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+        "call_id": "toolu_01Liqq8JFNUsCSrZsFDAogGp",
+        "tool": "Write content/hello-note.txt",
+        "status": "completed"
+      }
+    },
+    {
+      "id": "67",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.updated",
+      "ts": "2026-09-08T12:00:34.601Z",
+      "sandbox_id": "c_bfwt5nj2hgt4",
+      "turn_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+      "data": {
+        "part_id": "gen-1788868831-7tRhZ3uv9fbyyS5VUk74:text",
+        "message_id": "gen-1788868831-7tRhZ3uv9fbyyS5VUk74",
+        "kind": "text",
+        "text": "Both files created:\n\n1. `src/auth/session-note.txt` \u2014 contains `denied`\n2. `content/hello-note.txt` \u2014 contains `allowed`\n\nNo files were read, no shell commands run, and no PR opened."
+      }
+    },
+    {
+      "id": "73",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.completed",
+      "ts": "2026-09-08T12:00:35.404Z",
+      "sandbox_id": "c_bfwt5nj2hgt4",
+      "turn_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+      "data": {
+        "message_id": "gen-1788868831-7tRhZ3uv9fbyyS5VUk74",
+        "finish": "end_turn"
+      }
+    },
+    {
+      "id": "73",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "turn.completed",
+      "ts": "2026-09-08T12:00:35.404Z",
+      "sandbox_id": "c_bfwt5nj2hgt4",
+      "turn_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+      "data": {
+        "state": "succeeded"
+      }
+    }
+  ],
+  "durable": [
+    {
+      "id": "11",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "turn.started",
+      "ts": "2026-09-08T12:00:19.566Z",
+      "sandbox_id": "c_bfwt5nj2hgt4",
+      "turn_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+      "data": {
+        "prompt_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+        "text": "The git repository is checked out in the directory `bento-open-book`. Every path below is relative to that directory, so write inside it.\nDo exactly two things, in this order, and nothing else.\nStep 1: create a file at `bento-open-book/src/auth/session-note.txt` whose entire contents are the word `denied`.\nStep 2: whether or not step 1 succeeded, create a file at `bento-open-book/content/hello-note.txt` whose entire contents are the word `allowed`.\nDo not read any files first. Do not run any shell commands. Do not create a pull request. Then stop.",
+        "files": [],
+        "author": {
+          "id": "user_01M1Y23NSPKFFQR8420YNW9X07"
+        }
+      }
+    },
+    {
+      "id": "23",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.updated",
+      "ts": "2026-09-08T12:00:22.850Z",
+      "sandbox_id": "c_bfwt5nj2hgt4",
+      "turn_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+      "data": {
+        "part_id": "gen-1788868820-WDJLmj3DYUn8JNV7nzno:text",
+        "message_id": "gen-1788868820-WDJLmj3DYUn8JNV7nzno",
+        "kind": "text",
+        "text": "I'll create both files as requested."
+      }
+    },
+    {
+      "id": "31",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "approval.requested",
+      "ts": "2026-09-08T12:00:23.983Z",
+      "sandbox_id": "c_bfwt5nj2hgt4",
+      "turn_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+      "data": {
+        "approval_id": "toolu_013ggn64TdEmspJZrW2F2B9M",
+        "tool": "Write src/auth/session-note.txt"
+      }
+    },
+    {
+      "id": "32",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "approval.resolved",
+      "ts": "2026-09-08T12:00:25.659Z",
+      "sandbox_id": "c_bfwt5nj2hgt4",
+      "turn_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+      "data": {
+        "approval_id": "toolu_013ggn64TdEmspJZrW2F2B9M",
+        "outcome": "approved"
+      }
+    },
+    {
+      "id": "37",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "tool.updated",
+      "ts": "2026-09-08T12:00:25.982Z",
+      "sandbox_id": "c_bfwt5nj2hgt4",
+      "turn_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+      "data": {
+        "part_id": "tool:toolu_013ggn64TdEmspJZrW2F2B9M",
+        "message_id": "turn-tools:937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+        "call_id": "toolu_013ggn64TdEmspJZrW2F2B9M",
+        "tool": "Write src/auth/session-note.txt",
+        "status": "completed"
+      }
+    },
+    {
+      "id": "47",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "approval.requested",
+      "ts": "2026-09-08T12:00:29.044Z",
+      "sandbox_id": "c_bfwt5nj2hgt4",
+      "turn_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+      "data": {
+        "approval_id": "toolu_01Liqq8JFNUsCSrZsFDAogGp",
+        "tool": "Write content/hello-note.txt"
+      }
+    },
+    {
+      "id": "48",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "approval.resolved",
+      "ts": "2026-09-08T12:00:30.684Z",
+      "sandbox_id": "c_bfwt5nj2hgt4",
+      "turn_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+      "data": {
+        "approval_id": "toolu_01Liqq8JFNUsCSrZsFDAogGp",
+        "outcome": "approved"
+      }
+    },
+    {
+      "id": "53",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "tool.updated",
+      "ts": "2026-09-08T12:00:30.999Z",
+      "sandbox_id": "c_bfwt5nj2hgt4",
+      "turn_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+      "data": {
+        "part_id": "tool:toolu_01Liqq8JFNUsCSrZsFDAogGp",
+        "message_id": "turn-tools:937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+        "call_id": "toolu_01Liqq8JFNUsCSrZsFDAogGp",
+        "tool": "Write content/hello-note.txt",
+        "status": "completed"
+      }
+    },
+    {
+      "id": "67",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.updated",
+      "ts": "2026-09-08T12:00:34.601Z",
+      "sandbox_id": "c_bfwt5nj2hgt4",
+      "turn_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+      "data": {
+        "part_id": "gen-1788868831-7tRhZ3uv9fbyyS5VUk74:text",
+        "message_id": "gen-1788868831-7tRhZ3uv9fbyyS5VUk74",
+        "kind": "text",
+        "text": "Both files created:\n\n1. `src/auth/session-note.txt` \u2014 contains `denied`\n2. `content/hello-note.txt` \u2014 contains `allowed`\n\nNo files were read, no shell commands run, and no PR opened."
+      }
+    },
+    {
+      "id": "73",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "message.completed",
+      "ts": "2026-09-08T12:00:35.404Z",
+      "sandbox_id": "c_bfwt5nj2hgt4",
+      "turn_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+      "data": {
+        "message_id": "gen-1788868831-7tRhZ3uv9fbyyS5VUk74",
+        "finish": "end_turn"
+      }
+    },
+    {
+      "id": "73",
+      "object": "sandbox.event",
+      "version": "v1",
+      "type": "turn.completed",
+      "ts": "2026-09-08T12:00:35.404Z",
+      "sandbox_id": "c_bfwt5nj2hgt4",
+      "turn_id": "937dc8f4-ab8f-5da0-b10e-07e1334d6979",
+      "data": {
+        "state": "succeeded"
+      }
+    }
+  ],
+  "p7": {
+    "ran": false,
+    "deniedAbsent": false,
+    "allowedPresent": false,
+    "allowedBody": ""
+  },
+  "_note": "CONTROL RUN. Nothing was denied; every approval was granted. Both writes reported tool.updated status:'completed' and POST /pull-request still returned 409 invalid_request 'No sandbox changes to publish'. This proves the publish failure is independent of denial, and that status:'completed' is NOT evidence a file reached the git working tree."
+}
