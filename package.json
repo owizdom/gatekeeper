@@ -1,0 +1,18 @@
+{
+  "name": "gatekeeper",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A policy layer for agent-authored pull requests. Auto-merge, escalate, batch, refuse.",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "test": "node --test 'test/*.test.ts'",
+    "route": "node bin/gk.ts route",
+    "smoke": "node smoke/smoke-approvals.mjs"
+  },
+  "dependencies": {
+    "yaml": "^2.6.1"
+  }
+}
